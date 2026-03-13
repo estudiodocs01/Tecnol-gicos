@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISIÓN COORDINACIÓN – VOCALITZA BÉ</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal:#1A7A6E;--teal-light:#2aa898;--orange:#E8733A;
+    --yellow:#FFD166;--red:#EF476F;--green:#06D6A0;
+    --purple:#B39DDB;--pink:#F48FB1;
+    --bg:#0d1b2a;--card:#162032;--card2:#1e2d42;--text:#e8f4f0;--muted:#7a9ab0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;
+    background-image:radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 70% 20%,rgba(255,255,255,.25) 0%,transparent 100%),
+    radial-gradient(2px 2px at 50% 80%,rgba(255,255,255,.2) 0%,transparent 100%),
+    radial-gradient(1px 1px at 85% 55%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 10% 70%,rgba(255,255,255,.2) 0%,transparent 100%);
+    pointer-events:none;z-index:0;}
+  .container{max-width:760px;margin:0 auto;padding:20px;position:relative;z-index:1;}
+  .screen{display:none;animation:fadeIn .5s ease;}
+  .screen.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+  /* PROGRESS */
+  .progress-bar{display:flex;align-items:center;gap:10px;margin-bottom:24px;padding:12px 16px;background:var(--card);border-radius:12px;border:1px solid rgba(179,157,219,.2);}
+  .progress-label{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
+  .progress-track{flex:1;height:8px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--pink));border-radius:100px;transition:width .6s ease;}
+  .xp-badge{background:var(--yellow);color:#1a1a00;font-size:11px;font-weight:900;padding:4px 10px;border-radius:20px;white-space:nowrap;}
+
+  /* HERO */
+  .hero-card{background:linear-gradient(135deg,#2d1b4e 0%,#1a0f30 100%);border-radius:20px;padding:36px;text-align:center;margin-bottom:24px;position:relative;overflow:hidden;border:1px solid rgba(179,157,219,.25);}
+  .hero-card::before{content:'';position:absolute;top:-40%;right:-15%;width:280px;height:280px;background:radial-gradient(circle,rgba(179,157,219,.1) 0%,transparent 70%);border-radius:50%;}
+  .mission-tag{display:inline-block;background:var(--purple);color:#1a0f30;font-family:'Bangers',cursive;font-size:13px;letter-spacing:2px;padding:4px 16px;border-radius:20px;margin-bottom:16px;}
+  .hero-title{font-family:'Bangers',cursive;font-size:clamp(30px,7vw,50px);letter-spacing:3px;color:white;line-height:1;margin-bottom:8px;text-shadow:0 4px 20px rgba(0,0,0,.4);}
+  .hero-title span{color:var(--purple);}
+  .hero-subtitle{font-size:15px;color:rgba(255,255,255,.8);margin-bottom:20px;line-height:1.5;}
+  .hero-stats{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+  .stat-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;color:white;}
+
+  /* CARDS */
+  .content-card{background:var(--card);border-radius:16px;padding:24px;margin-bottom:16px;border:1px solid rgba(255,255,255,.06);}
+  .content-card.purple-border{border-left:4px solid var(--purple);}
+  .content-card.orange-border{border-left:4px solid var(--orange);}
+  .content-card.green-border{border-left:4px solid var(--green);}
+  .card-title{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:var(--purple);margin-bottom:12px;}
+  .card-body{font-size:15px;line-height:1.7;color:rgba(255,255,255,.85);}
+
+  /* EXERCISE */
+  .exercise-card{background:var(--card2);border-radius:16px;padding:24px;margin-bottom:16px;border:1px solid rgba(255,255,255,.06);}
+  .step-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+  .step-number{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:22px;flex-shrink:0;}
+  .step-number.purple{background:var(--purple);color:#1a0f30;}
+  .step-number.orange{background:var(--orange);color:white;}
+  .step-number.green{background:var(--green);color:#0d1b2a;}
+  .step-title{font-size:16px;font-weight:900;color:white;line-height:1.2;}
+  .step-time{font-size:12px;color:var(--yellow);font-weight:700;}
+  .step-instructions{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .step-instructions li{display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.6;color:rgba(255,255,255,.85);}
+  .step-num-inline{width:24px;height:24px;border-radius:50%;background:rgba(179,157,219,.15);border:1px solid var(--purple);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;margin-top:1px;color:var(--purple);}
+
+  .highlight-box{background:rgba(6,214,160,.08);border:1px solid rgba(6,214,160,.25);border-radius:10px;padding:14px 16px;margin-top:14px;font-size:13px;color:var(--green);font-weight:600;line-height:1.5;}
+  .warning-box{background:rgba(239,71,111,.08);border:1px solid rgba(239,71,111,.25);border-radius:10px;padding:14px 16px;margin-top:10px;font-size:13px;color:#ff8fab;font-weight:600;line-height:1.5;}
+
+  /* FRASE CARD - el elemento central de esta actividad */
+  .frase-stage{background:var(--card2);border-radius:20px;padding:28px;margin:16px 0;border:2px solid rgba(179,157,219,.2);position:relative;overflow:hidden;}
+  .frase-stage::before{content:'🎤';position:absolute;top:-10px;right:16px;font-size:48px;opacity:.12;}
+  .frase-label{font-size:11px;color:var(--purple);font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;}
+  .frase-text{font-size:18px;font-weight:700;color:white;line-height:1.6;margin-bottom:16px;}
+  .frase-text .pause-mark{color:var(--yellow);font-size:22px;font-weight:900;}
+  .frase-meta{display:flex;gap:10px;flex-wrap:wrap;}
+  .frase-tag{background:rgba(255,255,255,.08);border-radius:8px;padding:4px 10px;font-size:12px;color:var(--muted);font-weight:700;}
+
+  /* BREATH INDICATOR dentro de frase */
+  .breath-guide{display:flex;align-items:center;gap:10px;margin:12px 0;padding:12px 14px;background:rgba(26,122,110,.1);border-radius:10px;border:1px solid rgba(26,122,110,.2);}
+  .breath-guide-icon{font-size:20px;}
+  .breath-guide-text{font-size:13px;color:rgba(255,255,255,.8);line-height:1.5;}
+
+  /* SEMAPHORE */
+  .semaphore{display:flex;gap:12px;margin:16px 0;}
+  .sem-btn{flex:1;border:none;border-radius:12px;padding:14px 10px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:900;font-size:13px;transition:all .2s ease;position:relative;overflow:hidden;}
+  .sem-btn:hover{transform:translateY(-2px);}
+  .sem-btn:active{transform:scale(.97);}
+  .sem-btn.green{background:linear-gradient(135deg,#06D6A0,#04a87e);color:#0d1b2a;}
+  .sem-btn.yellow{background:linear-gradient(135deg,#FFD166,#f0b429);color:#1a1000;}
+  .sem-btn.red{background:linear-gradient(135deg,#EF476F,#c73558);color:white;}
+  .sem-icon{font-size:26px;display:block;margin-bottom:5px;}
+  .sem-label{line-height:1.3;font-size:12px;}
+
+  /* FEEDBACK */
+  .feedback-panel{display:none;border-radius:14px;padding:18px;margin-top:10px;animation:slideDown .3s ease;}
+  .feedback-panel.visible{display:block;}
+  @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+  .feedback-panel.green{background:rgba(6,214,160,.12);border:1px solid rgba(6,214,160,.3);}
+  .feedback-panel.yellow{background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.3);}
+  .feedback-panel.red{background:rgba(239,71,111,.1);border:1px solid rgba(239,71,111,.3);}
+  .feedback-panel h4{font-size:14px;font-weight:900;margin-bottom:7px;}
+  .feedback-panel.green h4{color:var(--green);}
+  .feedback-panel.yellow h4{color:var(--yellow);}
+  .feedback-panel.red h4{color:var(--red);}
+  .feedback-panel p{font-size:13px;line-height:1.6;color:rgba(255,255,255,.8);}
+
+  /* SCENARIO SELECTOR */
+  .scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+  .scenario-card{background:var(--card2);border-radius:14px;padding:16px;cursor:pointer;border:2px solid rgba(255,255,255,.06);transition:all .2s;text-align:center;}
+  .scenario-card:hover{border-color:var(--purple);transform:translateY(-2px);}
+  .scenario-card.selected{border-color:var(--purple);background:rgba(179,157,219,.1);}
+  .scenario-icon{font-size:32px;margin-bottom:8px;}
+  .scenario-title{font-size:13px;font-weight:900;color:white;margin-bottom:4px;}
+  .scenario-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+
+  /* PRACTICE ROUNDS */
+  .round-tracker{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0;padding:14px;background:var(--card);border-radius:12px;}
+  .round-label{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+  .round-dots{display:flex;gap:8px;}
+  .round-dot{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.15);cursor:pointer;transition:all .2s;}
+  .round-dot:hover{border-color:var(--purple);}
+  .round-dot.done{background:var(--purple);border-color:var(--purple);}
+  .round-count{font-family:'Bangers',cursive;font-size:20px;color:var(--purple);}
+
+  /* ALERT SCENARIO */
+  .alert-scenario{background:rgba(232,115,58,.08);border:2px solid rgba(232,115,58,.25);border-radius:16px;padding:20px;margin:16px 0;}
+  .alert-scenario-title{font-size:13px;font-weight:900;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+  .choice-btn{display:block;width:100%;padding:13px 16px;margin-bottom:10px;border:2px solid rgba(255,255,255,.08);border-radius:10px;background:var(--card2);color:rgba(255,255,255,.85);font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-align:left;transition:all .2s;line-height:1.4;}
+  .choice-btn:hover{border-color:var(--purple);background:rgba(179,157,219,.08);}
+  .choice-btn.correct{border-color:var(--green);background:rgba(6,214,160,.1);color:var(--green);}
+  .choice-btn.wrong{border-color:var(--red);background:rgba(239,71,111,.1);color:#ff8fab;opacity:.7;}
+  .choice-feedback{display:none;border-radius:10px;padding:12px 14px;margin-top:8px;font-size:13px;line-height:1.5;}
+  .choice-feedback.visible{display:block;}
+  .choice-feedback.correct{background:rgba(6,214,160,.1);border:1px solid rgba(6,214,160,.25);color:var(--green);}
+  .choice-feedback.wrong{background:rgba(239,71,111,.08);border:1px solid rgba(239,71,111,.2);color:#ff8fab;}
+
+  /* MINI CLASE FINAL */
+  .miniclase-stage{background:linear-gradient(135deg,#1a2a3a,#0d1b2a);border-radius:20px;padding:24px;border:2px solid rgba(179,157,219,.2);margin:16px 0;}
+  .miniclase-title{font-family:'Bangers',cursive;font-size:22px;color:var(--purple);letter-spacing:2px;margin-bottom:4px;}
+  .miniclase-sub{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+  .miniclase-frases{display:flex;flex-direction:column;gap:10px;}
+  .miniclase-frase{background:var(--card2);border-radius:12px;padding:14px 16px;border:1px solid rgba(255,255,255,.06);transition:all .2s;}
+  .miniclase-frase.active{border-color:var(--purple);background:rgba(179,157,219,.08);}
+  .miniclase-frase.done{border-color:var(--green);background:rgba(6,214,160,.06);opacity:.8;}
+  .mf-num{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+  .mf-text{font-size:15px;font-weight:700;color:white;line-height:1.5;margin-bottom:8px;}
+  .mf-text .p{color:var(--yellow);font-size:18px;}
+  .mf-guide{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:10px;}
+  .mf-check{display:flex;gap:8px;}
+  .mf-check-btn{padding:6px 12px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:transparent;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;}
+  .mf-check-btn:hover{border-color:var(--purple);color:var(--purple);}
+  .mf-check-btn.marked-green{background:rgba(6,214,160,.15);border-color:var(--green);color:var(--green);}
+  .mf-check-btn.marked-yellow{background:rgba(255,209,102,.12);border-color:var(--yellow);color:var(--yellow);}
+  .mf-check-btn.marked-red{background:rgba(239,71,111,.1);border-color:var(--red);color:var(--red);}
+
+  /* BOTONES */
+  .btn-primary{display:block;width:100%;padding:16px 24px;background:linear-gradient(135deg,var(--purple),#8c6dbd);color:white;font-family:'Bangers',cursive;font-size:20px;letter-spacing:2px;border:none;border-radius:14px;cursor:pointer;transition:all .2s ease;text-align:center;margin-top:8px;box-shadow:0 4px 20px rgba(179,157,219,.25);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(179,157,219,.35);}
+  .btn-primary:active{transform:scale(.98);}
+  .btn-secondary{display:block;width:100%;padding:13px 24px;background:transparent;color:var(--purple);font-weight:700;font-size:14px;border:2px solid var(--purple);border-radius:14px;cursor:pointer;transition:all .2s ease;text-align:center;margin-top:10px;}
+  .btn-secondary:hover{background:rgba(179,157,219,.1);}
+
+  /* ACHIEVEMENT */
+  .achievement{background:linear-gradient(135deg,var(--yellow),#f0b429);color:#1a1000;border-radius:16px;padding:20px 24px;display:flex;align-items:center;gap:16px;margin-bottom:20px;box-shadow:0 4px 20px rgba(255,209,102,.25);}
+  .achievement-icon{font-size:40px;}
+  .achievement-text h3{font-family:'Bangers',cursive;font-size:22px;letter-spacing:1px;}
+  .achievement-text p{font-size:13px;font-weight:600;opacity:.8;}
+  .final-score{text-align:center;padding:32px;background:linear-gradient(135deg,#2d1b4e,#0d1b2a);border-radius:20px;border:2px solid var(--purple);margin-bottom:20px;}
+  .score-number{font-family:'Bangers',cursive;font-size:80px;color:var(--purple);line-height:1;text-shadow:0 0 40px rgba(179,157,219,.4);}
+  .score-label{font-size:13px;color:var(--muted);margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+  .score-title{font-size:14px;color:rgba(255,255,255,.7);margin-top:10px;}
+
+  .breadcrumb{display:flex;align-items:center;gap:6px;margin-bottom:20px;font-size:12px;color:var(--muted);}
+  .breadcrumb span{color:var(--purple);font-weight:700;}
+  @media(max-width:500px){.scenario-grid{grid-template-columns:1fr}.semaphore{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- S0: INTRO -->
+<div class="screen active" id="s0">
+  <div class="hero-card">
+    <div class="mission-tag">🎙 MISIÓN 5 DE 10</div>
+    <h1 class="hero-title">MISIÓN<br><span>COORDINACIÓN</span><br>VOCAL</h1>
+    <p class="hero-subtitle">Respiración + Voz + Frases de aula reales<br>La integración de todo lo aprendido</p>
+    <div class="hero-stats">
+      <span class="stat-pill">⏱ 10 minutos</span>
+      <span class="stat-pill">🎯 3 fases</span>
+      <span class="stat-pill">⭐ +50 XP</span>
+    </div>
+  </div>
+
+  <div class="content-card purple-border">
+    <div class="card-title">¿Qué practicarás hoy?</div>
+    <div class="card-body">
+      Ya tienes la postura y la respiración. Ahora toca aplicarlo a frases reales del aula. Practicarás <strong>dónde respirar, cómo proyectar sin forzar y qué hacer cuando el aula se pone ruidosa</strong>.
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
+    <div style="display:flex;gap:12px;align-items:center;padding:12px 14px;background:var(--card2);border-radius:10px;">
+      <span style="font-size:20px;">💨</span>
+      <span style="font-size:13px;color:rgba(255,255,255,.8)"><strong style="color:white;">Fase 1:</strong> Frases cortas con pausa respiratoria</span>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;padding:12px 14px;background:var(--card2);border-radius:10px;">
+      <span style="font-size:20px;">📢</span>
+      <span style="font-size:13px;color:rgba(255,255,255,.8)"><strong style="color:white;">Fase 2:</strong> Frases largas de aula real</span>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;padding:12px 14px;background:var(--card2);border-radius:10px;">
+      <span style="font-size:20px;">🚨</span>
+      <span style="font-size:13px;color:rgba(255,255,255,.8)"><strong style="color:white;">Fase 3:</strong> Situación de aula ruidosa</span>
+    </div>
+  </div>
+
+  <button class="btn-primary" onclick="goTo('s1')">🚀 INICIAR MISIÓN</button>
+</div>
+
+<!-- S1: FASE 1 - FRASES CORTAS -->
+<div class="screen" id="s1">
+  <div class="progress-bar">
+    <span class="progress-label">Progreso</span>
+    <div class="progress-track"><div class="progress-fill" style="width:20%"></div></div>
+    <span class="xp-badge">Fase 1 / 3</span>
+  </div>
+  <div class="breadcrumb">Misión Coordinación › <span>Fase 1: Frases cortas</span></div>
+
+  <div class="content-card purple-border">
+    <div class="card-title">Cómo hacerlo</div>
+    <div class="card-body" style="font-size:14px;">
+      Para cada frase: <strong>(1)</strong> inspira costodiafragmáticamente <strong>(2)</strong> di la frase completa en una sola espiración <strong>(3)</strong> pausa <strong>(4)</strong> evalúa con el semáforo.
+    </div>
+  </div>
+
+  <!-- FRASE 1 -->
+  <div class="frase-stage">
+    <div class="frase-label">Frase 1 de 3 · Corta</div>
+    <div class="frase-text">"Buenos días a todos, ¿estáis listos?"</div>
+    <div class="frase-meta">
+      <span class="frase-tag">⏱ 1 espiración</span>
+      <span class="frase-tag">🎯 Sin pausas</span>
+    </div>
+    <div class="breath-guide">
+      <span class="breath-guide-icon">💡</span>
+      <span class="breath-guide-text">Inspira antes de empezar. Esta frase cabe en <strong>una sola espiración</strong>. Habla con resonancia anterior: la vibración debe estar en los labios.</span>
+    </div>
+  </div>
+
+  <div class="round-tracker">
+    <span class="round-label">Repeticiones</span>
+    <div class="round-dots">
+      <div class="round-dot" id="r1a-0" onclick="markRound('r1a',0)"></div>
+      <div class="round-dot" id="r1a-1" onclick="markRound('r1a',1)"></div>
+      <div class="round-dot" id="r1a-2" onclick="markRound('r1a',2)"></div>
+    </div>
+    <span class="round-count" id="rc-r1a">0/3</span>
+  </div>
+
+  <!-- FRASE 2 -->
+  <div class="frase-stage" style="margin-top:16px;">
+    <div class="frase-label">Frase 2 de 3 · Media</div>
+    <div class="frase-text">"Abrid el libro por la página 24 y leed el primer párrafo."</div>
+    <div class="frase-meta">
+      <span class="frase-tag">⏱ 1-2 espiraciones</span>
+      <span class="frase-tag">🎯 Pausa opcional</span>
+    </div>
+    <div class="breath-guide">
+      <span class="breath-guide-icon">💡</span>
+      <span class="breath-guide-text">Prueba primero en una espiración. Si no llegas, la pausa va después de <strong>"página 24"</strong>, que es el límite sintáctico natural.</span>
+    </div>
+  </div>
+
+  <div class="round-tracker">
+    <span class="round-label">Repeticiones</span>
+    <div class="round-dots">
+      <div class="round-dot" id="r1b-0" onclick="markRound('r1b',0)"></div>
+      <div class="round-dot" id="r1b-1" onclick="markRound('r1b',1)"></div>
+      <div class="round-dot" id="r1b-2" onclick="markRound('r1b',2)"></div>
+    </div>
+    <span class="round-count" id="rc-r1b">0/3</span>
+  </div>
+
+  <p style="font-size:13px;color:var(--muted);text-align:center;margin:16px 0 10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">¿Cómo han ido las frases cortas?</p>
+  <div class="semaphore">
+    <button class="sem-btn green" onclick="showFeedback('f1','green')"><span class="sem-icon">🟢</span><span class="sem-label">Con fluidez</span></button>
+    <button class="sem-btn yellow" onclick="showFeedback('f1','yellow')"><span class="sem-icon">🟡</span><span class="sem-label">Algún esfuerzo</span></button>
+    <button class="sem-btn red" onclick="showFeedback('f1','red')"><span class="sem-icon">🔴</span><span class="sem-label">Me quedé sin aire</span></button>
+  </div>
+  <div class="feedback-panel green" id="f1-green"><h4>¡Base sólida!</h4><p>Las frases cortas fluyen con naturalidad. Tu coordinación fonorrespiratoria está bien calibrada para este nivel. Pasa a las frases largas.</p></div>
+  <div class="feedback-panel yellow" id="f1-yellow"><h4>Normal al principio</h4><p>El esfuerzo indica que la coordinación todavía no es automática. Eso es esperable en las primeras semanas. Sigue practicando estas 2 frases 5 veces seguidas antes de pasar a las largas.</p></div>
+  <div class="feedback-panel red" id="f1-red"><h4>Vuelve a la Actividad 4</h4><p>Si te quedas sin aire en frases cortas, el soporte respiratorio costodiafragmático necesita más práctica. Vuelve a la Misión Respiración Base 2-3 días antes de continuar aquí.</p></div>
+
+  <button class="btn-primary" onclick="goTo('s2')" style="margin-top:16px">FASE 2: FRASES LARGAS →</button>
+</div>
+
+<!-- S2: FASE 2 - FRASES LARGAS -->
+<div class="screen" id="s2">
+  <div class="progress-bar">
+    <span class="progress-label">Progreso</span>
+    <div class="progress-track"><div class="progress-fill" style="width:50%"></div></div>
+    <span class="xp-badge">Fase 2 / 3</span>
+  </div>
+  <div class="breadcrumb">Misión Coordinación › <span>Fase 2: Frases largas de aula</span></div>
+
+  <div class="content-card purple-border">
+    <div class="card-title">La barra "|" indica dónde respirar</div>
+    <div class="card-body" style="font-size:14px;">
+      Estas frases son demasiado largas para una sola espiración. La barra marca el punto de pausa respiratoria óptimo: <strong>al límite de una unidad de sentido completa</strong>, nunca en mitad de una palabra o sintagma.
+    </div>
+  </div>
+
+  <!-- FRASE LARGA 1 -->
+  <div class="frase-stage">
+    <div class="frase-label">Frase larga 1</div>
+    <div class="frase-text">"Hoy aprenderemos los ríos principales de Europa <span class="pause-mark">|</span> y dónde desembocan al mar."</div>
+    <div class="frase-meta">
+      <span class="frase-tag">🟡 La barra = inspira aquí</span>
+      <span class="frase-tag">⏱ 2 espiraciones</span>
+    </div>
+    <div class="breath-guide">
+      <span class="breath-guide-icon">💡</span>
+      <span class="breath-guide-text">La pausa va después de "Europa" porque es el fin de la primera idea. Di la primera parte, inspira rápido (1-2 seg), continúa. <strong>La pausa no debe notarse como silencio largo</strong>.</span>
+    </div>
+  </div>
+
+  <div class="round-tracker">
+    <span class="round-label">Repeticiones</span>
+    <div class="round-dots">
+      <div class="round-dot" id="r2a-0" onclick="markRound('r2a',0)"></div>
+      <div class="round-dot" id="r2a-1" onclick="markRound('r2a',1)"></div>
+      <div class="round-dot" id="r2a-2" onclick="markRound('r2a',2)"></div>
+    </div>
+    <span class="round-count" id="rc-r2a">0/3</span>
+  </div>
+
+  <!-- FRASE LARGA 2 -->
+  <div class="frase-stage" style="margin-top:14px;">
+    <div class="frase-label">Frase larga 2</div>
+    <div class="frase-text">"Recordad que mañana hay que traer el proyecto terminado <span class="pause-mark">|</span> y que quien tenga dudas, que me lo diga ahora."</div>
+    <div class="frase-meta">
+      <span class="frase-tag">🟡 2 ideas, 2 espiraciones</span>
+    </div>
+    <div class="breath-guide">
+      <span class="breath-guide-icon">💡</span>
+      <span class="breath-guide-text">Dos frases coordinadas con "y que". La pausa va antes de la segunda frase. Mantén el tono estable en ambas partes: <strong>no bajes el volumen al final</strong>.</span>
+    </div>
+  </div>
+
+  <div class="round-tracker">
+    <span class="round-label">Repeticiones</span>
+    <div class="round-dots">
+      <div class="round-dot" id="r2b-0" onclick="markRound('r2b',0)"></div>
+      <div class="round-dot" id="r2b-1" onclick="markRound('r2b',1)"></div>
+      <div class="round-dot" id="r2b-2" onclick="markRound('r2b',2)"></div>
+    </div>
+    <span class="round-count" id="rc-r2b">0/3</span>
+  </div>
+
+  <!-- FRASE LARGA 3 -->
+  <div class="frase-stage" style="margin-top:14px;">
+    <div class="frase-label">Frase larga 3 · La más difícil</div>
+    <div class="frase-text">"Prestad atención porque esto entra en el examen, <span class="pause-mark">|</span> y quien no lo entienda ahora <span class="pause-mark">|</span> puede quedarse un momento al acabar la clase."</div>
+    <div class="frase-meta">
+      <span class="frase-tag">🔴 3 ideas, 3 espiraciones</span>
+    </div>
+    <div class="breath-guide">
+      <span class="breath-guide-icon">💡</span>
+      <span class="breath-guide-text">3 partes claramente diferenciadas. Practica primero solo las 2 primeras. Cuando salgan bien, añade la tercera.</span>
+    </div>
+  </div>
+
+  <div class="round-tracker">
+    <span class="round-label">Repeticiones</span>
+    <div class="round-dots">
+      <div class="round-dot" id="r2c-0" onclick="markRound('r2c',0)"></div>
+      <div class="round-dot" id="r2c-1" onclick="markRound('r2c',1)"></div>
+      <div class="round-dot" id="r2c-2" onclick="markRound('r2c',2)"></div>
+    </div>
+    <span class="round-count" id="rc-r2c">0/3</span>
+  </div>
+
+  <p style="font-size:13px;color:var(--muted);text-align:center;margin:16px 0 10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">¿Cómo han ido las frases largas?</p>
+  <div class="semaphore">
+    <button class="sem-btn green" onclick="showFeedback('f2','green')"><span class="sem-icon">🟢</span><span class="sem-label">Pausas naturales</span></button>
+    <button class="sem-btn yellow" onclick="showFeedback('f2','yellow')"><span class="sem-icon">🟡</span><span class="sem-label">Algunas se notaban</span></button>
+    <button class="sem-btn red" onclick="showFeedback('f2','red')"><span class="sem-icon">🔴</span><span class="sem-label">Me quedé sin aire</span></button>
+  </div>
+  <div class="feedback-panel green" id="f2-green"><h4>¡Fraseo eficiente!</h4><p>Las pausas en el límite sintáctico son casi imperceptibles para el oyente y te permiten recuperar el aire sin interrumpir el mensaje. Eso es el fraseo melódico eficiente.</p></div>
+  <div class="feedback-panel yellow" id="f2-yellow"><h4>Las pausas se van afinando</h4><p>Normal. En clase real, el automatismo llega en 3-4 semanas de práctica diaria. Sigue usando estas mismas frases como entrenamiento hasta que no tengas que pensar en las pausas.</p></div>
+  <div class="feedback-panel red" id="f2-red"><h4>La planificación del fraseo necesita más trabajo</h4><p>Practica primero cada frase larga dividiéndola en sus partes por separado. Cuando cada parte fluya bien, únelas. La frase 3 puede dividirse en dos días de práctica.</p></div>
+
+  <button class="btn-primary" onclick="goTo('s3')" style="margin-top:16px">FASE 3: SITUACIÓN REAL →</button>
+</div>
+
+<!-- S3: FASE 3 - AULA RUIDOSA -->
+<div class="screen" id="s3">
+  <div class="progress-bar">
+    <span class="progress-label">Progreso</span>
+    <div class="progress-track"><div class="progress-fill" style="width:75%"></div></div>
+    <span class="xp-badge">Fase 3 / 3</span>
+  </div>
+  <div class="breadcrumb">Misión Coordinación › <span>Fase 3: Situación de aula ruidosa</span></div>
+
+  <div class="content-card orange-border">
+    <div class="card-title">⚠️ Situación real · Toma de decisiones</div>
+    <div class="card-body" style="font-size:14px;">
+      Esta es la situación más peligrosa para tu voz. El instinto es elevar la voz. <strong>Ese instinto es tu enemigo vocal.</strong> Elige la respuesta correcta en cada escenario.
+    </div>
+  </div>
+
+  <!-- ESCENARIO 1 -->
+  <div class="alert-scenario">
+    <div class="alert-scenario-title">🔔 Escenario 1: La clase se alborota</div>
+    <p style="font-size:14px;color:rgba(255,255,255,.85);margin-bottom:14px;line-height:1.5;">Estás explicando y de repente varios alumnos empiezan a hablar entre ellos. El ruido va subiendo. ¿Qué haces?</p>
+    <button class="choice-btn" id="e1a" onclick="selectChoice('e1','a','wrong')">A) Elevo la voz gradualmente hasta que me escuchen</button>
+    <button class="choice-btn" id="e1b" onclick="selectChoice('e1','b','correct')">B) Hago una señal visual (palmas, apago la luz un segundo, levanto la mano) y espero en silencio</button>
+    <button class="choice-btn" id="e1c" onclick="selectChoice('e1','c','wrong')">C) Llamo por su nombre a los que hablan en voz alta</button>
+    <div class="choice-feedback" id="e1-fb"></div>
+  </div>
+
+  <!-- ESCENARIO 2 -->
+  <div class="alert-scenario">
+    <div class="alert-scenario-title">🔔 Escenario 2: Un alumno al fondo no te escucha</div>
+    <p style="font-size:14px;color:rgba(255,255,255,.85);margin-bottom:14px;line-height:1.5;">Hay un alumno en la última fila que no parece estar siguiendo. Le pregunto si me escucha y dice que no. ¿Qué haces?</p>
+    <button class="choice-btn" id="e2a" onclick="selectChoice('e2','a','wrong')">A) Repito la explicación más alto para que llegue a toda la clase</button>
+    <button class="choice-btn" id="e2b" onclick="selectChoice('e2','b','wrong')">B) Me acerco a él y le explico en voz baja solo a él</button>
+    <button class="choice-btn" id="e2c" onclick="selectChoice('e2','c','correct')">C) Pido que guarden silencio, me recoloco en el espacio y uso la resonancia anterior para proyectar sin elevar el volumen</button>
+    <div class="choice-feedback" id="e2-fb"></div>
+  </div>
+
+  <!-- ESCENARIO 3 -->
+  <div class="alert-scenario">
+    <div class="alert-scenario-title">🔔 Escenario 3: Final de jornada, voz cargada</div>
+    <p style="font-size:14px;color:rgba(255,255,255,.85);margin-bottom:14px;line-height:1.5;">Son las 17:00. Has dado 6 horas de clase. Notas la voz ronca y cansada. Quedan 30 minutos de clase. ¿Qué haces?</p>
+    <button class="choice-btn" id="e3a" onclick="selectChoice('e3','a','wrong')">A) Continúo hablando normal, solo me queda media hora</button>
+    <button class="choice-btn" id="e3b" onclick="selectChoice('e3','b','correct')">B) Activo el SEMÁFORO ROJO: reduzco el uso de la voz al mínimo, uso la pizarra, trabajo individual o en grupo sin necesitar que me escuchen todos</button>
+    <button class="choice-btn" id="e3c" onclick="selectChoice('e3','c','wrong')">C) Tomo agua y carraspeo para aclarar la voz y continúo</button>
+    <div class="choice-feedback" id="e3-fb"></div>
+  </div>
+
+  <button class="btn-primary" onclick="goTo('s4')" style="margin-top:8px">MINI-CLASE FINAL →</button>
+</div>
+
+<!-- S4: MINI-CLASE SIMULADA -->
+<div class="screen" id="s4">
+  <div class="progress-bar">
+    <span class="progress-label">Progreso</span>
+    <div class="progress-track"><div class="progress-fill" style="width:90%"></div></div>
+    <span class="xp-badge">¡Casi!</span>
+  </div>
+  <div class="breadcrumb">Misión Coordinación › <span>Mini-clase simulada</span></div>
+
+  <div class="miniclase-stage">
+    <div class="miniclase-title">🎓 MINI-CLASE</div>
+    <div class="miniclase-sub">Aplica todo · Di cada frase en voz alta · Evalúa con el semáforo</div>
+
+    <div class="miniclase-frases">
+
+      <div class="miniclase-frase" id="mf0">
+        <div class="mf-num">Frase de inicio</div>
+        <div class="mf-text">"Buenos días. Hoy vamos a hacer algo diferente."</div>
+        <div class="mf-guide">Postura de aula · Resonancia anterior · Sin elevar el volumen</div>
+        <div class="mf-check">
+          <button class="mf-check-btn" onclick="markMf(0,'green')">🟢 Fluida</button>
+          <button class="mf-check-btn" onclick="markMf(0,'yellow')">🟡 Esfuerzo</button>
+          <button class="mf-check-btn" onclick="markMf(0,'red')">🔴 Tensión</button>
+        </div>
+      </div>
+
+      <div class="miniclase-frase" id="mf1">
+        <div class="mf-num">Explicación</div>
+        <div class="mf-text">"Escuchadme bien <span class="p">|</span> porque esto es importante para el examen."</div>
+        <div class="mf-guide">Pausa respiratoria en la barra · Tono estable en ambas partes</div>
+        <div class="mf-check">
+          <button class="mf-check-btn" onclick="markMf(1,'green')">🟢 Fluida</button>
+          <button class="mf-check-btn" onclick="markMf(1,'yellow')">🟡 Esfuerzo</button>
+          <button class="mf-check-btn" onclick="markMf(1,'red')">🔴 Tensión</button>
+        </div>
+      </div>
+
+      <div class="miniclase-frase" id="mf2">
+        <div class="mf-num">Instrucción larga</div>
+        <div class="mf-text">"Abrid el cuaderno, escribid el título <span class="p">|</span> y copiad el esquema que está en la pizarra."</div>
+        <div class="mf-guide">2 ideas = 2 espiraciones · La pausa no debe ser larga</div>
+        <div class="mf-check">
+          <button class="mf-check-btn" onclick="markMf(2,'green')">🟢 Fluida</button>
+          <button class="mf-check-btn" onclick="markMf(2,'yellow')">🟡 Esfuerzo</button>
+          <button class="mf-check-btn" onclick="markMf(2,'red')">🔴 Tensión</button>
+        </div>
+      </div>
+
+      <div class="miniclase-frase" id="mf3">
+        <div class="mf-num">Gestión del ruido</div>
+        <div class="mf-text"><em style="color:var(--muted);font-weight:400;">[El aula se alborota. Sin elevar la voz, haces una señal con la mano y esperas.]</em><br>Una vez en silencio: "Gracias. Continuamos."</div>
+        <div class="mf-guide">Señal visual + silencio + voz tranquila cuando retomas</div>
+        <div class="mf-check">
+          <button class="mf-check-btn" onclick="markMf(3,'green')">🟢 Lo he hecho</button>
+          <button class="mf-check-btn" onclick="markMf(3,'yellow')">🟡 He elevado un poco</button>
+          <button class="mf-check-btn" onclick="markMf(3,'red')">🔴 He elevado la voz</button>
+        </div>
+      </div>
+
+      <div class="miniclase-frase" id="mf4">
+        <div class="mf-num">Cierre de clase</div>
+        <div class="mf-text">"Muy bien por hoy. <span class="p">|</span> Mañana continuamos. <span class="p">|</span> Hasta mañana."</div>
+        <div class="mf-guide">3 frases cortas · Pausa entre cada una · Voz tranquila y descendente</div>
+        <div class="mf-check">
+          <button class="mf-check-btn" onclick="markMf(4,'green')">🟢 Fluida</button>
+          <button class="mf-check-btn" onclick="markMf(4,'yellow')">🟡 Esfuerzo</button>
+          <button class="mf-check-btn" onclick="markMf(4,'red')">🔴 Tensión</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <button class="btn-primary" onclick="goTo('s5')">VER RESULTADO FINAL →</button>
+</div>
+
+<!-- S5: FINAL -->
+<div class="screen" id="s5">
+  <div class="progress-bar">
+    <span class="progress-label">Progreso</span>
+    <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+    <span class="xp-badge">¡COMPLETO!</span>
+  </div>
+
+  <div class="achievement">
+    <span class="achievement-icon">🎙</span>
+    <div class="achievement-text">
+      <h3>MISIÓN COMPLETADA</h3>
+      <p>Has desbloqueado: Coordinación Vocal Funcional</p>
+    </div>
+  </div>
+
+  <div class="final-score">
+    <div class="score-number">+50</div>
+    <div class="score-label">XP ganados</div>
+    <div class="score-title">Misión Coordinación · Nivel 2 VOCALITZA BÉ</div>
+  </div>
+
+  <div id="final-summary" style="margin-bottom:16px;"></div>
+
+  <p style="font-size:13px;color:var(--muted);text-align:center;margin:0 0 12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Evaluación global de la sesión:</p>
+  <div class="semaphore">
+    <button class="sem-btn green" onclick="showFeedback('ff','green')"><span class="sem-icon">🟢</span><span class="sem-label">Todo fluido</span></button>
+    <button class="sem-btn yellow" onclick="showFeedback('ff','yellow')"><span class="sem-icon">🟡</span><span class="sem-label">Algún esfuerzo</span></button>
+    <button class="sem-btn red" onclick="showFeedback('ff','red')"><span class="sem-icon">🔴</span><span class="sem-label">Mucho esfuerzo</span></button>
+  </div>
+  <div class="feedback-panel green" id="ff-green">
+    <h4>¡Coordinación fonorrespiratoria funcional! Anota 🟢</h4>
+    <p>La integración postura + respiración + fraseo en frases reales es el objetivo final de esta misión. Practica la mini-clase cada día esta semana. En 2 semanas será automático.</p>
+  </div>
+  <div class="feedback-panel yellow" id="ff-yellow">
+    <h4>¡Buen progreso! Anota 🟡</h4>
+    <p>El esfuerzo irá disminuyendo con la práctica diaria. Identifica qué fase te ha costado más (frases cortas, largas o situación ruidosa) y dedícale 5 minutos extra mañana.</p>
+  </div>
+  <div class="feedback-panel red" id="ff-red">
+    <h4>Repasa las misiones anteriores. Anota 🔴</h4>
+    <p>La coordinación fonorrespiratoria necesita que la base de respiración esté más automatizada. Vuelve a la Misión Respiración Base durante 3-4 días antes de continuar aquí.</p>
+  </div>
+
+  <div class="content-card" style="margin-top:16px;background:rgba(26,122,110,.1);border:1px solid rgba(26,122,110,.2);">
+    <div class="card-title">📝 Recuerda anotar en tu Full de Registre</div>
+    <div class="card-body" style="font-size:13px;">Fecha de hoy · Actividad 5 Coordinación · Semáforo de cada fase · Color global · Llévalo al próximo check-in con tu logopeda.</div>
+  </div>
+
+  <button class="btn-primary" onclick="goTo('s0')" style="margin-top:16px">🔄 REPETIR MISIÓN</button>
+  <button class="btn-secondary" onclick="goTo('s0')">← Volver al inicio</button>
+</div>
+
+</div>
+<script>
+  function goTo(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+    if(id==='s5') buildFinalSummary();
+  }
+
+  function showFeedback(group,color){
+    ['green','yellow','red'].forEach(c=>{
+      const el=document.getElementById(`${group}-${c}`);
+      if(el) el.classList.remove('visible');
+    });
+    const t=document.getElementById(`${group}-${color}`);
+    if(t) t.classList.add('visible');
+  }
+
+  // Round dots
+  const roundCounts={};
+  function markRound(id,idx){
+    if(!roundCounts[id]) roundCounts[id]=0;
+    document.getElementById(`${id}-${idx}`).classList.toggle('done');
+    const dots=document.querySelectorAll(`[id^="${id}-"]`);
+    let count=0;
+    dots.forEach(d=>{if(d.classList.contains('done')) count++;});
+    roundCounts[id]=count;
+    document.getElementById(`rc-${id}`).textContent=`${count}/3`;
+  }
+
+  // Choice buttons
+  const choiceAnswers={};
+  function selectChoice(scenario,letter,result){
+    if(choiceAnswers[scenario]) return;
+    choiceAnswers[scenario]={letter,result};
+    const letters=['a','b','c'];
+    letters.forEach(l=>{
+      const btn=document.getElementById(`${scenario}${l}`);
+      if(!btn) return;
+      if(l===letter){
+        btn.classList.add(result);
+      } else {
+        btn.style.opacity='0.4';
+      }
+    });
+    const fb=document.getElementById(`${scenario}-fb`);
+    fb.classList.add('visible');
+    if(result==='correct'){
+      fb.classList.add('correct');
+      fb.innerHTML = getChoiceFeedback(scenario,letter,'correct');
+    } else {
+      fb.classList.add('wrong');
+      fb.innerHTML = getChoiceFeedback(scenario,letter,'wrong');
+    }
+  }
+
+  function getChoiceFeedback(scenario,letter,result){
+    const feedbacks={
+      e1:{
+        a:{wrong:'🔴 Elevar la voz progresivamente es el mecanismo de hiperfunción más frecuente en docentes. Cada vez que lo haces entrenas a tu laringe a funcionar con sobreesfuerzo.'},
+        b:{correct:'🟢 ¡Perfecto! La señal visual + silencio rompe el ciclo de ruido sin costar ningún esfuerzo vocal. Y transmite más autoridad que gritar.'},
+        c:{wrong:'🟡 Llamar por nombre en voz alta sigue siendo un uso vocal elevado. Mejor una señal visual que no cueste voz.'}
+      },
+      e2:{
+        a:{wrong:'🔴 Repetir más alto sobrecarga la voz y solo resuelve el síntoma (que no te escucha) sin resolver la causa (hay ruido o mala acústica).'},
+        b:{wrong:'🟡 Acercarte es buena idea, pero si solo se lo explicas a él el resto de la clase pierde el hilo. Mejor resolver el problema para todos.'},
+        c:{correct:'🟢 ¡Exacto! La resonancia anterior proyecta la voz hacia adelante sin necesidad de elevar el volumen. El secreto es la dirección del sonido, no la intensidad.'}
+      },
+      e3:{
+        a:{wrong:'🔴 "Solo queda media hora" es la trampa más común. La fatiga vocal acumulada durante esos 30 minutos puede triplicar el tiempo de recuperación necesario.'},
+        b:{correct:'🟢 ¡Semáforo rojo activado correctamente! Reducir al mínimo el uso vocal cuando la voz está cargada es la conducta profesional que protege tus cuerdas.'},
+        c:{wrong:'🔴 El carraspeo traumatiza las cuerdas vocales y el agua, aunque hidrata, no resuelve la fatiga aguda. Ambas son respuestas de aplazamiento, no de protección.'}
+      }
+    };
+    return feedbacks[scenario]?.[letter]?.[result] || '';
+  }
+
+  // Mini-clase marks
+  const mfMarks={};
+  function markMf(idx,color){
+    mfMarks[idx]=color;
+    const frase=document.getElementById(`mf${idx}`);
+    frase.classList.add('done');
+    const btns=frase.querySelectorAll('.mf-check-btn');
+    btns.forEach(b=>{
+      b.classList.remove('marked-green','marked-yellow','marked-red');
+    });
+    btns[color==='green'?0:color==='yellow'?1:2].classList.add(`marked-${color}`);
+  }
+
+  function buildFinalSummary(){
+    const el=document.getElementById('final-summary');
+    const labels=['Frases de inicio','Explicación','Instrucción larga','Gestión del ruido','Cierre'];
+    let html='<div style="background:var(--card2);border-radius:14px;padding:18px;border:1px solid rgba(255,255,255,.06);">';
+    html+='<div style="font-size:11px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Tu mini-clase de hoy</div>';
+    html+='<div style="display:flex;flex-direction:column;gap:8px;">';
+    for(let i=0;i<5;i++){
+      const c=mfMarks[i]||'muted';
+      const icon=c==='green'?'🟢':c==='yellow'?'🟡':c==='red'?'🔴':'⚪';
+      html+=`<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">
+        <span style="color:rgba(255,255,255,.7);">${labels[i]}</span>
+        <span style="font-size:18px;">${icon}</span>
+      </div>`;
+    }
+    html+='</div></div>';
+    el.innerHTML=html;
+  }
+</script>
+</body>
+</html>

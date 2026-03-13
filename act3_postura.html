@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISIÓN POSTURA – VOCALITZA BÉ</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1A7A6E;
+    --teal-light: #2aa898;
+    --orange: #E8733A;
+    --yellow: #FFD166;
+    --red: #EF476F;
+    --green: #06D6A0;
+    --bg: #0d1b2a;
+    --card: #162032;
+    --card2: #1e2d42;
+    --text: #e8f4f0;
+    --muted: #7a9ab0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Stars background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,0.35) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 70%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(2px 2px at 90% 10%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 50%, rgba(255,255,255,0.15) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* SCREENS */
+  .screen { display: none; animation: fadeIn 0.5s ease; }
+  .screen.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    padding: 12px 16px;
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid rgba(26,122,110,0.3);
+  }
+
+  .progress-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--green));
+    border-radius: 100px;
+    transition: width 0.6s ease;
+  }
+
+  .xp-badge {
+    background: var(--yellow);
+    color: #1a1a00;
+    font-size: 11px;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* HERO CARD */
+  .hero-card {
+    background: linear-gradient(135deg, var(--teal) 0%, #0d5e54 100%);
+    border-radius: 20px;
+    padding: 36px;
+    text-align: center;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .mission-tag {
+    display: inline-block;
+    background: var(--orange);
+    color: white;
+    font-family: 'Bangers', cursive;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 4px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  .hero-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(36px, 8vw, 56px);
+    letter-spacing: 3px;
+    color: white;
+    line-height: 1;
+    margin-bottom: 8px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .hero-title span { color: var(--yellow); }
+
+  .hero-subtitle {
+    font-size: 15px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .stat-pill {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+  }
+
+  /* CONTENT CARD */
+  .content-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .content-card.orange-border { border-left: 4px solid var(--orange); }
+  .content-card.green-border { border-left: 4px solid var(--green); }
+  .content-card.yellow-border { border-left: 4px solid var(--yellow); }
+
+  .card-title {
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--teal-light);
+    margin-bottom: 12px;
+  }
+
+  .card-body {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* EXERCISE STEP */
+  .exercise-card {
+    background: var(--card2);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .step-number {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bangers', cursive;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .step-number.orange { background: var(--orange); color: white; }
+  .step-number.teal { background: var(--teal); color: white; }
+  .step-number.green { background: var(--green); color: #0d1b2a; }
+
+  .step-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: white;
+    line-height: 1.2;
+  }
+
+  .step-time {
+    font-size: 12px;
+    color: var(--yellow);
+    font-weight: 700;
+  }
+
+  .step-instructions {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .step-instructions li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .step-num-inline {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(26,122,110,0.4);
+    border: 1px solid var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 900;
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: var(--green);
+  }
+
+  /* HIGHLIGHT BOX */
+  .highlight-box {
+    background: rgba(6, 214, 160, 0.08);
+    border: 1px solid rgba(6, 214, 160, 0.25);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--green);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .warning-box {
+    background: rgba(239, 71, 111, 0.08);
+    border: 1px solid rgba(239, 71, 111, 0.25);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #ff8fab;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  /* TIMER DISPLAY */
+  .timer-display {
+    background: var(--card);
+    border: 2px solid var(--teal);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .timer-title {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .timer-count {
+    font-family: 'Bangers', cursive;
+    font-size: 64px;
+    color: var(--green);
+    line-height: 1;
+    letter-spacing: 2px;
+  }
+
+  .timer-unit { font-size: 16px; color: var(--muted); margin-top: 4px; }
+
+  /* SEMAPHORE */
+  .semaphore {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .sem-btn {
+    flex: 1;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 10px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sem-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+  }
+
+  .sem-btn:hover::before { width: 200px; height: 200px; }
+  .sem-btn:hover { transform: translateY(-2px); }
+  .sem-btn:active { transform: scale(0.97); }
+
+  .sem-btn.green { background: linear-gradient(135deg, #06D6A0, #04a87e); color: #0d1b2a; }
+  .sem-btn.yellow { background: linear-gradient(135deg, #FFD166, #f0b429); color: #1a1000; }
+  .sem-btn.red { background: linear-gradient(135deg, #EF476F, #c73558); color: white; }
+
+  .sem-icon { font-size: 28px; display: block; margin-bottom: 6px; }
+  .sem-label { line-height: 1.3; }
+
+  /* FEEDBACK PANEL */
+  .feedback-panel {
+    display: none;
+    border-radius: 14px;
+    padding: 20px;
+    margin-top: 12px;
+    animation: slideDown 0.3s ease;
+  }
+
+  .feedback-panel.visible { display: block; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .feedback-panel.green { background: rgba(6,214,160,0.12); border: 1px solid rgba(6,214,160,0.3); }
+  .feedback-panel.yellow { background: rgba(255,209,102,0.1); border: 1px solid rgba(255,209,102,0.3); }
+  .feedback-panel.red { background: rgba(239,71,111,0.1); border: 1px solid rgba(239,71,111,0.3); }
+
+  .feedback-panel h4 {
+    font-size: 15px;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+
+  .feedback-panel.green h4 { color: var(--green); }
+  .feedback-panel.yellow h4 { color: var(--yellow); }
+  .feedback-panel.red h4 { color: var(--red); }
+
+  .feedback-panel p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.8);
+  }
+
+  /* BUTTONS */
+  .btn-primary {
+    display: block;
+    width: 100%;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, var(--orange), #d4622f);
+    color: white;
+    font-family: 'Bangers', cursive;
+    font-size: 20px;
+    letter-spacing: 2px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    margin-top: 8px;
+    box-shadow: 0 4px 20px rgba(232,115,58,0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(232,115,58,0.4);
+  }
+
+  .btn-primary:active { transform: scale(0.98); }
+
+  .btn-secondary {
+    display: block;
+    width: 100%;
+    padding: 13px 24px;
+    background: transparent;
+    color: var(--teal-light);
+    font-weight: 700;
+    font-size: 14px;
+    border: 2px solid var(--teal);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .btn-secondary:hover { background: rgba(26,122,110,0.15); }
+
+  /* ACHIEVEMENT */
+  .achievement {
+    background: linear-gradient(135deg, var(--yellow), #f0b429);
+    color: #1a1000;
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(255,209,102,0.25);
+  }
+
+  .achievement-icon { font-size: 40px; }
+
+  .achievement-text h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+
+  .achievement-text p { font-size: 13px; font-weight: 600; opacity: 0.8; }
+
+  /* FINAL SCORE */
+  .final-score {
+    text-align: center;
+    padding: 32px;
+    background: linear-gradient(135deg, #0d3d37, #0d1b2a);
+    border-radius: 20px;
+    border: 2px solid var(--teal);
+    margin-bottom: 20px;
+  }
+
+  .score-number {
+    font-family: 'Bangers', cursive;
+    font-size: 80px;
+    color: var(--green);
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(6,214,160,0.4);
+  }
+
+  .score-label { font-size: 13px; color: var(--muted); margin-top: 4px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .score-title { font-size: 14px; color: rgba(255,255,255,0.7); margin-top: 10px; }
+
+  /* TIMER WIDGET */
+  .timer-widget {
+    background: var(--card2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .timer-info { font-size: 13px; color: var(--muted); }
+  .timer-info strong { color: white; display: block; font-size: 15px; margin-bottom: 2px; }
+
+  .timer-btn {
+    padding: 10px 20px;
+    background: var(--teal);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .timer-btn:hover { background: var(--teal-light); }
+  .timer-btn.running { background: var(--orange); animation: pulse 1s infinite; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  .timer-value {
+    font-family: 'Bangers', cursive;
+    font-size: 28px;
+    color: var(--green);
+    letter-spacing: 1px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  /* INTEGRATION SEQUENCE */
+  .sequence-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .seq-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--card2);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: all 0.2s;
+  }
+
+  .seq-step.done {
+    background: rgba(6,214,160,0.08);
+    border-color: rgba(6,214,160,0.2);
+    opacity: 0.7;
+  }
+
+  .seq-check {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    font-size: 14px;
+    color: transparent;
+    background: transparent;
+  }
+
+  .seq-step.done .seq-check {
+    background: var(--green);
+    border-color: var(--green);
+    color: #0d1b2a;
+  }
+
+  .seq-text { font-size: 14px; line-height: 1.5; color: rgba(255,255,255,0.85); }
+  .seq-time { font-size: 11px; color: var(--yellow); font-weight: 700; margin-top: 2px; }
+
+  /* BREADCRUMB */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .breadcrumb span { color: var(--teal-light); font-weight: 700; }
+
+  /* RESPONSIVE */
+  @media (max-width: 500px) {
+    .semaphore { flex-direction: column; }
+    .hero-stats { gap: 8px; }
+    .stat-pill { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ============ SCREEN 0: INTRO ============ -->
+  <div class="screen active" id="s0">
+    <div class="hero-card">
+      <div class="mission-tag">⚡ MISIÓN 3 DE 10</div>
+      <h1 class="hero-title">MISIÓN<br><span>POSTURA</span></h1>
+      <p class="hero-subtitle">Alinea tu cuerpo · Libera tu voz<br>Tu laringe te lo agradecerá</p>
+      <div class="hero-stats">
+        <span class="stat-pill">⏱ 5 minutos</span>
+        <span class="stat-pill">🏆 3 ejercicios</span>
+        <span class="stat-pill">⭐ +30 XP</span>
+      </div>
+    </div>
+
+    <div class="content-card orange-border">
+      <div class="card-title">¿Por qué esta misión?</div>
+      <div class="card-body">
+        Cuando tienes tensión en el cuello o la mandíbula, los músculos que rodean la laringe se contraen. Resultado: las cuerdas vocales no vibran libremente y <strong>gastas el doble de energía para hablar</strong>.
+        <br><br>
+        Hoy aprenderás 3 ajustes posturales que protegen tu voz en el aula. Cada uno dura solo 30 segundos.
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="goTo('s1')">🚀 INICIAR MISIÓN</button>
+  </div>
+
+  <!-- ============ SCREEN 1: EJERCICIO 1 ============ -->
+  <div class="screen" id="s1">
+    <div class="progress-bar">
+      <span class="progress-label">Progreso</span>
+      <div class="progress-track"><div class="progress-fill" style="width:25%"></div></div>
+      <span class="xp-badge">+10 XP</span>
+    </div>
+
+    <div class="breadcrumb">Misión Postura › <span>Ejercicio 1 de 3</span></div>
+
+    <div class="exercise-card">
+      <div class="step-header">
+        <div class="step-number orange">1</div>
+        <div>
+          <div class="step-title">Alinea la columna</div>
+          <div class="step-time">⏱ 30 segundos</div>
+        </div>
+      </div>
+
+      <ul class="step-instructions">
+        <li><span class="step-num-inline">1</span> Siéntate en el borde de la silla. Pies planos en el suelo, separados a la anchura de las caderas.</li>
+        <li><span class="step-num-inline">2</span> Imagina que un hilo de seda te tira suavemente desde la coronilla hacia el techo. Sin forzar.</li>
+        <li><span class="step-num-inline">3</span> Deja que los hombros caigan hacia atrás y abajo. No los subas.</li>
+        <li><span class="step-num-inline">4</span> Pon una mano en el pecho y la otra en el abdomen. Nota si el pecho se ha abierto.</li>
+        <li><span class="step-num-inline">5</span> Ahora di <strong>"AAAH"</strong> suavemente durante 5 segundos. ¿Notas menos presión en el cuello?</li>
+      </ul>
+
+      <div class="highlight-box">
+        🟢 Señal de que lo haces bien: sientes la vibración en la garganta sin tensión en el cuello
+      </div>
+      <div class="warning-box">
+        🔴 Señal de error: los hombros están subidos o el mentón apunta hacia arriba
+      </div>
+    </div>
+
+    <div class="timer-widget">
+      <div class="timer-info">
+        <strong id="t1-label">Cronómetro del ejercicio</strong>
+        Pulsa START cuando empieces
+      </div>
+      <div class="timer-value" id="t1-val">0:30</div>
+      <button class="timer-btn" id="t1-btn" onclick="startTimer('t1')">START</button>
+    </div>
+
+    <div style="margin-top:20px">
+      <p style="font-size:13px; color:var(--muted); text-align:center; margin-bottom:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">¿Cómo te ha ido el ejercicio 1?</p>
+      <div class="semaphore">
+        <button class="sem-btn green" onclick="showFeedback('f1','green')">
+          <span class="sem-icon">🟢</span>
+          <span class="sem-label">Lo he notado</span>
+        </button>
+        <button class="sem-btn yellow" onclick="showFeedback('f1','yellow')">
+          <span class="sem-icon">🟡</span>
+          <span class="sem-label">Un poco</span>
+        </button>
+        <button class="sem-btn red" onclick="showFeedback('f1','red')">
+          <span class="sem-icon">🔴</span>
+          <span class="sem-label">No noto nada</span>
+        </button>
+      </div>
+
+      <div class="feedback-panel green" id="f1-green">
+        <h4>¡Perfecto! +10 XP desbloqueados</h4>
+        <p>Cuando la columna está alineada, la laringe descansa en posición neutra y los músculos suprahioideos no tienen que trabajar extra. Tu voz fluye con menos esfuerzo.</p>
+      </div>
+      <div class="feedback-panel yellow" id="f1-yellow">
+        <h4>¡Vas bien! Necesita práctica</h4>
+        <p>Normal en las primeras sesiones. La diferencia se nota más cuando repites el ejercicio 3-4 días seguidos. Concéntrate especialmente en bajar los hombros.</p>
+      </div>
+      <div class="feedback-panel red" id="f1-red">
+        <h4>Sin presión, es normal</h4>
+        <p>Prueba a hacer el ejercicio 2 (relajar mandíbula) antes de volver a este. A veces la tensión cervical bloquea la percepción del alineamiento. Coméntaselo a tu logopeda.</p>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="goTo('s2')" style="margin-top:16px">SIGUIENTE EJERCICIO →</button>
+  </div>
+
+  <!-- ============ SCREEN 2: EJERCICIO 2 ============ -->
+  <div class="screen" id="s2">
+    <div class="progress-bar">
+      <span class="progress-label">Progreso</span>
+      <div class="progress-track"><div class="progress-fill" style="width:50%"></div></div>
+      <span class="xp-badge">+10 XP</span>
+    </div>
+
+    <div class="breadcrumb">Misión Postura › <span>Ejercicio 2 de 3</span></div>
+
+    <div class="exercise-card">
+      <div class="step-header">
+        <div class="step-number teal">2</div>
+        <div>
+          <div class="step-title">Relaja el cuello y la mandíbula</div>
+          <div class="step-time">⏱ 30 segundos</div>
+        </div>
+      </div>
+
+      <div class="content-card" style="background:rgba(232,115,58,0.08); border:1px solid rgba(232,115,58,0.2); margin-bottom:16px; padding:14px 16px;">
+        <div style="font-size:12px; color:var(--orange); font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">¿Sabías que...?</div>
+        <div style="font-size:13px; color:rgba(255,255,255,0.8); line-height:1.6;">La tensión en la mandíbula (ATM) y el cuello es el <strong>principal factor que mantiene la disfonía funcional</strong> en docentes. Relajarla es tan importante como los ejercicios de voz.</div>
+      </div>
+
+      <ul class="step-instructions">
+        <li><span class="step-num-inline">1</span> Deja caer la mandíbula suavemente. Como si fueras a decir "ah" en silencio. La boca queda ligeramente abierta.</li>
+        <li><span class="step-num-inline">2</span> Pon dos dedos en la mandíbula y comprueba que no está apretada.</li>
+        <li><span class="step-num-inline">3</span> Gira el cuello muy lentamente hacia la derecha. Aguanta 3 segundos. Vuelve al centro.</li>
+        <li><span class="step-num-inline">4</span> Gira hacia la izquierda. 3 segundos. Centro.</li>
+        <li><span class="step-num-inline">5</span> Di <strong>"MMMM"</strong> con los labios cerrados. La vibración debe llegar a los <strong>labios y la nariz</strong>, no solo a la garganta.</li>
+      </ul>
+
+      <div class="highlight-box">
+        🟢 Señal de que lo haces bien: la vibración del "mmmm" llega claramente a los labios
+      </div>
+      <div class="warning-box">
+        🔴 Señal de error: sientes presión o pellizco en la garganta al decir "mmmm"
+      </div>
+    </div>
+
+    <div class="timer-widget">
+      <div class="timer-info">
+        <strong id="t2-label">Cronómetro del ejercicio</strong>
+        Pulsa START cuando empieces
+      </div>
+      <div class="timer-value" id="t2-val">0:30</div>
+      <button class="timer-btn" id="t2-btn" onclick="startTimer('t2')">START</button>
+    </div>
+
+    <div style="margin-top:20px">
+      <p style="font-size:13px; color:var(--muted); text-align:center; margin-bottom:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">¿Cómo te ha ido el ejercicio 2?</p>
+      <div class="semaphore">
+        <button class="sem-btn green" onclick="showFeedback('f2','green')">
+          <span class="sem-icon">🟢</span>
+          <span class="sem-label">Vibración en labios</span>
+        </button>
+        <button class="sem-btn yellow" onclick="showFeedback('f2','yellow')">
+          <span class="sem-icon">🟡</span>
+          <span class="sem-label">Un poco</span>
+        </button>
+        <button class="sem-btn red" onclick="showFeedback('f2','red')">
+          <span class="sem-icon">🔴</span>
+          <span class="sem-label">Solo en garganta</span>
+        </button>
+      </div>
+
+      <div class="feedback-panel green" id="f2-green">
+        <h4>¡Excelente! Resonancia anterior activada</h4>
+        <p>La vibración en labios y nariz indica que estás usando resonancia anterior. Esto proyecta la voz hacia adelante sin sobrecargar las cuerdas vocales.</p>
+      </div>
+      <div class="feedback-panel yellow" id="f2-yellow">
+        <h4>¡Bien! Sigue practicando</h4>
+        <p>Prueba a decir "mmm" con la boca más cerrada y los labios ligeramente hacia adelante, como si besaras el aire. La vibración debería intensificarse en los labios.</p>
+      </div>
+      <div class="feedback-panel red" id="f2-red">
+        <h4>Atención: tensión laríngea</h4>
+        <p>La presión en la garganta indica que la fonación está muy apoyada en la laringe. Antes de continuar, relaja la mandíbula completamente y prueba a hacer el "mmmm" más suave y flojo, casi en susurro.</p>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="goTo('s3')" style="margin-top:16px">SIGUIENTE EJERCICIO →</button>
+  </div>
+
+  <!-- ============ SCREEN 3: EJERCICIO 3 ============ -->
+  <div class="screen" id="s3">
+    <div class="progress-bar">
+      <span class="progress-label">Progreso</span>
+      <div class="progress-track"><div class="progress-fill" style="width:75%"></div></div>
+      <span class="xp-badge">+10 XP</span>
+    </div>
+
+    <div class="breadcrumb">Misión Postura › <span>Ejercicio 3 de 3</span></div>
+
+    <div class="exercise-card">
+      <div class="step-header">
+        <div class="step-number green">3</div>
+        <div>
+          <div class="step-title">Postura en pie + Práctica integrada</div>
+          <div class="step-time">⏱ 2 minutos</div>
+        </div>
+      </div>
+
+      <ul class="step-instructions">
+        <li><span class="step-num-inline">1</span> Levántate. Pies a la anchura de las caderas.</li>
+        <li><span class="step-num-inline">2</span> Rodillas ligeramente flexionadas, nunca bloqueadas.</li>
+        <li><span class="step-num-inline">3</span> Pecho abierto. Hombros hacia atrás y abajo.</li>
+        <li><span class="step-num-inline">4</span> Mentón paralelo al suelo.</li>
+        <li><span class="step-num-inline">5</span> Pon 2 dedos sobre el cartílago tiroides (la nuez). Sube el mentón → la laringe sube y se tensa. Baja el mentón → la laringe baja y se relaja. Quédate en posición baja.</li>
+      </ul>
+    </div>
+
+    <div class="content-card green-border">
+      <div class="card-title">🎯 Ahora lo pones todo junto</div>
+      <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">Marca cada paso cuando lo hagas:</p>
+      <div class="sequence-steps" id="seq-steps">
+        <div class="seq-step" id="seq0" onclick="toggleSeq(0)">
+          <div class="seq-check" id="check0">✓</div>
+          <div>
+            <div class="seq-text"><strong>30 seg</strong> → Siéntate y alinea la columna (ejercicio 1). Di "AAAH" suavemente.</div>
+          </div>
+        </div>
+        <div class="seq-step" id="seq1" onclick="toggleSeq(1)">
+          <div class="seq-check" id="check1">✓</div>
+          <div>
+            <div class="seq-text"><strong>30 seg</strong> → Relaja mandíbula y cuello (ejercicio 2). Di "MMMM" y nota la vibración en los labios.</div>
+          </div>
+        </div>
+        <div class="seq-step" id="seq2" onclick="toggleSeq(2)">
+          <div class="seq-check" id="check2">✓</div>
+          <div>
+            <div class="seq-text"><strong>30 seg</strong> → Levántate. Postura de aula. Di esta frase en voz normal:<br><em style="color:var(--yellow)">"Bon dia! Avui treballarem els animals vertebrats."</em></div>
+          </div>
+        </div>
+        <div class="seq-step" id="seq3" onclick="toggleSeq(3)">
+          <div class="seq-check" id="check3">✓</div>
+          <div>
+            <div class="seq-text"><strong>30 seg</strong> → Siéntate. Respira. Observa cómo se siente el cuello ahora comparado con el principio.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="goTo('s4')" style="margin-top:8px">VER RESULTADO FINAL →</button>
+  </div>
+
+  <!-- ============ SCREEN 4: FINAL ============ -->
+  <div class="screen" id="s4">
+    <div class="progress-bar">
+      <span class="progress-label">Progreso</span>
+      <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+      <span class="xp-badge">¡COMPLETO!</span>
+    </div>
+
+    <div class="achievement">
+      <span class="achievement-icon">🏆</span>
+      <div class="achievement-text">
+        <h3>MISIÓN COMPLETADA</h3>
+        <p>Has desbloqueado: Postura Vocal Funcional</p>
+      </div>
+    </div>
+
+    <div class="final-score">
+      <div class="score-number">+30</div>
+      <div class="score-label">XP ganados</div>
+      <div class="score-title">Misión Postura · Nivel 2 VOCALITZA BÉ</div>
+    </div>
+
+    <p style="font-size:13px; color:var(--muted); text-align:center; margin-bottom:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Evaluación final: ¿cómo está tu cuello ahora?</p>
+
+    <div class="semaphore">
+      <button class="sem-btn green" onclick="showFeedback('ff','green')">
+        <span class="sem-icon">🟢</span>
+        <span class="sem-label">Mucho mejor</span>
+      </button>
+      <button class="sem-btn yellow" onclick="showFeedback('ff','yellow')">
+        <span class="sem-icon">🟡</span>
+        <span class="sem-label">Algo mejor</span>
+      </button>
+      <button class="sem-btn red" onclick="showFeedback('ff','red')">
+        <span class="sem-icon">🔴</span>
+        <span class="sem-label">Sin cambios</span>
+      </button>
+    </div>
+
+    <div class="feedback-panel green" id="ff-green">
+      <h4>¡Excelente! Anota 🟢 en tu registro</h4>
+      <p>Haz este ejercicio cada mañana antes de entrar a clase. Solo necesitas 5 minutos. En 2-3 semanas la postura funcional se automatiza y no necesitarás pensar en ella.</p>
+    </div>
+    <div class="feedback-panel yellow" id="ff-yellow">
+      <h4>¡Bien! Anota 🟡 en tu registro</h4>
+      <p>La tensión cervical acumulada necesita varios días de práctica diaria para reducirse significativamente. Continúa con el ejercicio 2 (cuello y mandíbula) dos veces al día.</p>
+    </div>
+    <div class="feedback-panel red" id="ff-red">
+      <h4>Anota 🔴 en tu registro</h4>
+      <p>Para y descansa. Si el malestar persiste, consulta a la logopeda antes de continuar. Puede haber tensión muscular que necesita atención específica.</p>
+    </div>
+
+    <div class="content-card" style="margin-top:16px; background:rgba(26,122,110,0.1); border:1px solid rgba(26,122,110,0.2);">
+      <div class="card-title">📝 Recuerda anotar en tu Full de Registre</div>
+      <div class="card-body" style="font-size:13px;">
+        Fecha de hoy · Actividad 3 Postura · Color del semáforo (🟢🟡🔴) · Llévalo al próximo check-in con tu logopeda.
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="goTo('s0')" style="margin-top:8px">🔄 REPETIR MISIÓN</button>
+    <button class="btn-secondary" onclick="goTo('s0')">← Volver al inicio</button>
+  </div>
+
+</div>
+
+<script>
+  // Navigation
+  function goTo(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  // Feedback panels
+  function showFeedback(group, color) {
+    ['green','yellow','red'].forEach(c => {
+      const el = document.getElementById(`${group}-${c}`);
+      if (el) el.classList.remove('visible');
+    });
+    const target = document.getElementById(`${group}-${color}`);
+    if (target) target.classList.add('visible');
+  }
+
+  // Sequence checkboxes
+  const seqDone = [false, false, false, false];
+  function toggleSeq(i) {
+    seqDone[i] = !seqDone[i];
+    const step = document.getElementById(`seq${i}`);
+    const check = document.getElementById(`check${i}`);
+    if (seqDone[i]) {
+      step.classList.add('done');
+    } else {
+      step.classList.remove('done');
+    }
+  }
+
+  // Timers
+  const timers = {};
+  function startTimer(id) {
+    if (timers[id]) {
+      clearInterval(timers[id].interval);
+      const btn = document.getElementById(`${id}-btn`);
+      const val = document.getElementById(`${id}-val`);
+      btn.textContent = 'START';
+      btn.classList.remove('running');
+      val.textContent = '0:30';
+      val.style.color = 'var(--green)';
+      timers[id] = null;
+      return;
+    }
+    let seconds = 30;
+    const btn = document.getElementById(`${id}-btn`);
+    const val = document.getElementById(`${id}-val`);
+    btn.textContent = 'STOP';
+    btn.classList.add('running');
+    const interval = setInterval(() => {
+      seconds--;
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      val.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+      if (seconds <= 10) val.style.color = 'var(--orange)';
+      if (seconds <= 0) {
+        clearInterval(interval);
+        val.textContent = '✓ LISTO';
+        val.style.color = 'var(--green)';
+        btn.textContent = 'RESET';
+        btn.classList.remove('running');
+        timers[id] = null;
+      }
+    }, 1000);
+    timers[id] = { interval };
+  }
+</script>
+</body>
+</html>

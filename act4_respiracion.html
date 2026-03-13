@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISIÓN RESPIRACIÓN BASE – VOCALITZA BÉ</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1A7A6E; --teal-light: #2aa898; --orange: #E8733A;
+    --yellow: #FFD166; --red: #EF476F; --green: #06D6A0;
+    --blue: #4FC3F7; --purple: #B39DDB;
+    --bg: #0d1b2a; --card: #162032; --card2: #1e2d42; --text: #e8f4f0; --muted: #7a9ab0;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+  body::before {
+    content:''; position:fixed; top:0;left:0;right:0;bottom:0;
+    background-image: radial-gradient(1px 1px at 15% 25%,rgba(255,255,255,.35) 0%,transparent 100%), radial-gradient(1px 1px at 75% 15%,rgba(255,255,255,.25) 0%,transparent 100%), radial-gradient(2px 2px at 55% 75%,rgba(255,255,255,.2) 0%,transparent 100%), radial-gradient(1px 1px at 85% 55%,rgba(255,255,255,.3) 0%,transparent 100%), radial-gradient(1px 1px at 25% 65%,rgba(255,255,255,.2) 0%,transparent 100%);
+    pointer-events:none; z-index:0;
+  }
+  .container { max-width:760px; margin:0 auto; padding:20px; position:relative; z-index:1; }
+  .screen { display:none; animation:fadeIn .5s ease; }
+  .screen.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  /* PROGRESS */
+  .progress-bar { display:flex; align-items:center; gap:10px; margin-bottom:24px; padding:12px 16px; background:var(--card); border-radius:12px; border:1px solid rgba(26,122,110,.3); }
+  .progress-label { font-size:12px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:1px; white-space:nowrap; }
+  .progress-track { flex:1; height:8px; background:rgba(255,255,255,.08); border-radius:100px; overflow:hidden; }
+  .progress-fill { height:100%; background:linear-gradient(90deg,var(--blue),var(--teal)); border-radius:100px; transition:width .6s ease; }
+  .xp-badge { background:var(--yellow); color:#1a1a00; font-size:11px; font-weight:900; padding:4px 10px; border-radius:20px; white-space:nowrap; }
+
+  /* HERO */
+  .hero-card { background:linear-gradient(135deg,#0d4a6e 0%,#0d2a4a 100%); border-radius:20px; padding:36px; text-align:center; margin-bottom:24px; position:relative; overflow:hidden; border:1px solid rgba(79,195,247,.2); }
+  .hero-card::before { content:''; position:absolute; top:-40%; right:-15%; width:280px; height:280px; background:radial-gradient(circle,rgba(79,195,247,.08) 0%,transparent 70%); border-radius:50%; }
+  .mission-tag { display:inline-block; background:var(--blue); color:#0d1b2a; font-family:'Bangers',cursive; font-size:13px; letter-spacing:2px; padding:4px 16px; border-radius:20px; margin-bottom:16px; }
+  .hero-title { font-family:'Bangers',cursive; font-size:clamp(34px,8vw,54px); letter-spacing:3px; color:white; line-height:1; margin-bottom:8px; text-shadow:0 4px 20px rgba(0,0,0,.3); }
+  .hero-title span { color:var(--blue); }
+  .hero-subtitle { font-size:15px; color:rgba(255,255,255,.8); margin-bottom:20px; line-height:1.5; }
+  .hero-stats { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
+  .stat-pill { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:20px; padding:6px 14px; font-size:13px; font-weight:700; color:white; }
+
+  /* CARDS */
+  .content-card { background:var(--card); border-radius:16px; padding:24px; margin-bottom:16px; border:1px solid rgba(255,255,255,.06); }
+  .content-card.blue-border { border-left:4px solid var(--blue); }
+  .content-card.teal-border { border-left:4px solid var(--teal); }
+  .content-card.orange-border { border-left:4px solid var(--orange); }
+  .card-title { font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:2px; color:var(--blue); margin-bottom:12px; }
+  .card-body { font-size:15px; line-height:1.7; color:rgba(255,255,255,.85); }
+
+  /* BREATHING VISUALIZER */
+  .breath-visualizer {
+    background:var(--card2); border-radius:16px; padding:28px; margin:16px 0; text-align:center; border:1px solid rgba(79,195,247,.15);
+  }
+  .breath-circle {
+    width:120px; height:120px; border-radius:50%; margin:0 auto 20px;
+    background:radial-gradient(circle,rgba(79,195,247,.3) 0%,rgba(26,122,110,.2) 60%,transparent 100%);
+    border:3px solid rgba(79,195,247,.4);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Bangers',cursive; font-size:14px; letter-spacing:1px;
+    color:var(--blue); text-align:center; line-height:1.3;
+    transition:all .5s ease;
+  }
+  .breath-circle.expand {
+    transform:scale(1.4);
+    background:radial-gradient(circle,rgba(6,214,160,.4) 0%,rgba(26,122,110,.3) 60%,transparent 100%);
+    border-color:var(--green);
+    color:var(--green);
+  }
+  .breath-circle.hold {
+    transform:scale(1.4);
+    background:radial-gradient(circle,rgba(255,209,102,.3) 0%,rgba(200,130,0,.2) 60%,transparent 100%);
+    border-color:var(--yellow);
+    color:var(--yellow);
+  }
+  .breath-circle.shrink {
+    transform:scale(1);
+    background:radial-gradient(circle,rgba(79,195,247,.2) 0%,rgba(13,74,110,.2) 60%,transparent 100%);
+    border-color:var(--blue);
+    color:var(--blue);
+  }
+  .breath-instruction {
+    font-size:16px; font-weight:900; color:white; margin-bottom:8px;
+    min-height:26px;
+  }
+  .breath-count {
+    font-family:'Bangers',cursive; font-size:48px; color:var(--blue); line-height:1;
+    min-height:60px; transition:color .3s;
+  }
+  .breath-count.green { color:var(--green); }
+  .breath-count.yellow { color:var(--yellow); }
+  .breath-phase {
+    font-size:12px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-top:8px;
+    min-height:18px;
+  }
+  .rep-counter {
+    display:flex; justify-content:center; gap:8px; margin-top:16px;
+  }
+  .rep-dot {
+    width:12px; height:12px; border-radius:50%;
+    background:rgba(255,255,255,.15); border:2px solid rgba(255,255,255,.2);
+    transition:all .3s;
+  }
+  .rep-dot.done { background:var(--green); border-color:var(--green); }
+
+  /* BREATH CONTROLS */
+  .breath-controls { display:flex; gap:10px; margin-top:16px; }
+  .breath-btn {
+    flex:1; padding:14px; border:none; border-radius:12px; cursor:pointer;
+    font-family:'Nunito',sans-serif; font-weight:900; font-size:15px;
+    transition:all .2s;
+  }
+  .breath-btn.start { background:linear-gradient(135deg,var(--blue),#2196F3); color:white; }
+  .breath-btn.stop { background:rgba(255,255,255,.1); color:var(--muted); border:1px solid rgba(255,255,255,.1); }
+  .breath-btn:hover { transform:translateY(-2px); }
+  .breath-btn:active { transform:scale(.97); }
+
+  /* EXERCISE CARD */
+  .exercise-card { background:var(--card2); border-radius:16px; padding:24px; margin-bottom:16px; border:1px solid rgba(255,255,255,.06); }
+  .step-header { display:flex; align-items:center; gap:14px; margin-bottom:18px; }
+  .step-number { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-family:'Bangers',cursive; font-size:22px; flex-shrink:0; }
+  .step-number.blue { background:var(--blue); color:#0d1b2a; }
+  .step-number.teal { background:var(--teal); color:white; }
+  .step-number.green { background:var(--green); color:#0d1b2a; }
+  .step-title { font-size:16px; font-weight:900; color:white; line-height:1.2; }
+  .step-time { font-size:12px; color:var(--yellow); font-weight:700; }
+  .step-instructions { list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .step-instructions li { display:flex; gap:12px; align-items:flex-start; font-size:14px; line-height:1.6; color:rgba(255,255,255,.85); }
+  .step-num-inline { width:24px; height:24px; border-radius:50%; background:rgba(79,195,247,.15); border:1px solid var(--blue); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:900; flex-shrink:0; margin-top:1px; color:var(--blue); }
+
+  .highlight-box { background:rgba(6,214,160,.08); border:1px solid rgba(6,214,160,.25); border-radius:10px; padding:14px 16px; margin-top:14px; font-size:13px; color:var(--green); font-weight:600; line-height:1.5; }
+  .warning-box { background:rgba(239,71,111,.08); border:1px solid rgba(239,71,111,.25); border-radius:10px; padding:14px 16px; margin-top:10px; font-size:13px; color:#ff8fab; font-weight:600; line-height:1.5; }
+  .info-box { background:rgba(79,195,247,.08); border:1px solid rgba(79,195,247,.2); border-radius:10px; padding:14px 16px; margin-top:10px; font-size:13px; color:var(--blue); font-weight:600; line-height:1.5; }
+
+  /* HAND INDICATOR */
+  .hand-indicator {
+    display:flex; gap:12px; margin:16px 0;
+  }
+  .hand-card {
+    flex:1; background:var(--card); border-radius:12px; padding:16px; text-align:center;
+    border:2px solid rgba(255,255,255,.08); transition:all .3s;
+  }
+  .hand-card.active { border-color:var(--green); background:rgba(6,214,160,.08); }
+  .hand-icon { font-size:32px; margin-bottom:6px; }
+  .hand-label { font-size:12px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+  .hand-status { font-size:11px; margin-top:4px; color:var(--muted); }
+  .hand-card.active .hand-label { color:var(--green); }
+  .hand-card.active .hand-status { color:rgba(6,214,160,.7); }
+
+  /* SEMAPHORE */
+  .semaphore { display:flex; gap:12px; margin:20px 0; }
+  .sem-btn { flex:1; border:none; border-radius:12px; padding:16px 10px; cursor:pointer; font-family:'Nunito',sans-serif; font-weight:900; font-size:13px; transition:all .2s ease; position:relative; overflow:hidden; }
+  .sem-btn:hover { transform:translateY(-2px); }
+  .sem-btn:active { transform:scale(.97); }
+  .sem-btn.green { background:linear-gradient(135deg,#06D6A0,#04a87e); color:#0d1b2a; }
+  .sem-btn.yellow { background:linear-gradient(135deg,#FFD166,#f0b429); color:#1a1000; }
+  .sem-btn.red { background:linear-gradient(135deg,#EF476F,#c73558); color:white; }
+  .sem-icon { font-size:28px; display:block; margin-bottom:6px; }
+  .sem-label { line-height:1.3; }
+
+  /* FEEDBACK */
+  .feedback-panel { display:none; border-radius:14px; padding:20px; margin-top:12px; animation:slideDown .3s ease; }
+  .feedback-panel.visible { display:block; }
+  @keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+  .feedback-panel.green { background:rgba(6,214,160,.12); border:1px solid rgba(6,214,160,.3); }
+  .feedback-panel.yellow { background:rgba(255,209,102,.1); border:1px solid rgba(255,209,102,.3); }
+  .feedback-panel.red { background:rgba(239,71,111,.1); border:1px solid rgba(239,71,111,.3); }
+  .feedback-panel h4 { font-size:15px; font-weight:900; margin-bottom:8px; }
+  .feedback-panel.green h4 { color:var(--green); }
+  .feedback-panel.yellow h4 { color:var(--yellow); }
+  .feedback-panel.red h4 { color:var(--red); }
+  .feedback-panel p { font-size:13px; line-height:1.6; color:rgba(255,255,255,.8); }
+
+  /* SERIE TABS */
+  .serie-tabs { display:flex; gap:8px; margin-bottom:16px; }
+  .serie-tab { flex:1; padding:10px; background:var(--card); border-radius:10px; border:2px solid rgba(255,255,255,.06); text-align:center; cursor:pointer; transition:all .2s; font-size:12px; font-weight:700; color:var(--muted); }
+  .serie-tab.active { border-color:var(--blue); color:var(--blue); background:rgba(79,195,247,.08); }
+  .serie-tab.done { border-color:var(--green); color:var(--green); background:rgba(6,214,160,.08); }
+  .serie-content { display:none; }
+  .serie-content.active { display:block; animation:fadeIn .3s ease; }
+
+  /* BUTTONS */
+  .btn-primary { display:block; width:100%; padding:16px 24px; background:linear-gradient(135deg,var(--blue),#2196F3); color:#0d1b2a; font-family:'Bangers',cursive; font-size:20px; letter-spacing:2px; border:none; border-radius:14px; cursor:pointer; transition:all .2s ease; text-align:center; margin-top:8px; box-shadow:0 4px 20px rgba(79,195,247,.25); font-weight:900; }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(79,195,247,.35); }
+  .btn-primary:active { transform:scale(.98); }
+  .btn-secondary { display:block; width:100%; padding:13px 24px; background:transparent; color:var(--blue); font-weight:700; font-size:14px; border:2px solid var(--blue); border-radius:14px; cursor:pointer; transition:all .2s ease; text-align:center; margin-top:10px; }
+  .btn-secondary:hover { background:rgba(79,195,247,.1); }
+
+  /* ACHIEVEMENT */
+  .achievement { background:linear-gradient(135deg,var(--yellow),#f0b429); color:#1a1000; border-radius:16px; padding:20px 24px; display:flex; align-items:center; gap:16px; margin-bottom:20px; box-shadow:0 4px 20px rgba(255,209,102,.25); }
+  .achievement-icon { font-size:40px; }
+  .achievement-text h3 { font-family:'Bangers',cursive; font-size:22px; letter-spacing:1px; }
+  .achievement-text p { font-size:13px; font-weight:600; opacity:.8; }
+  .final-score { text-align:center; padding:32px; background:linear-gradient(135deg,#0d2a4a,#0d1b2a); border-radius:20px; border:2px solid var(--blue); margin-bottom:20px; }
+  .score-number { font-family:'Bangers',cursive; font-size:80px; color:var(--blue); line-height:1; text-shadow:0 0 40px rgba(79,195,247,.4); }
+  .score-label { font-size:13px; color:var(--muted); margin-top:4px; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+  .score-title { font-size:14px; color:rgba(255,255,255,.7); margin-top:10px; }
+
+  .breadcrumb { display:flex; align-items:center; gap:6px; margin-bottom:20px; font-size:12px; color:var(--muted); }
+  .breadcrumb span { color:var(--blue); font-weight:700; }
+
+  @media(max-width:500px) { .semaphore{flex-direction:column} .hand-indicator{flex-direction:column} }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- SCREEN 0: INTRO -->
+  <div class="screen active" id="s0">
+    <div class="hero-card">
+      <div class="mission-tag">💨 MISIÓN 4 DE 10</div>
+      <h1 class="hero-title">MISIÓN<br><span>RESPIRACIÓN</span><br>BASE</h1>
+      <p class="hero-subtitle">Aprende a respirar como los profesionales de la voz<br>3 series · El fundamento de todo</p>
+      <div class="hero-stats">
+        <span class="stat-pill">⏱ 8 minutos</span>
+        <span class="stat-pill">🫁 3 series</span>
+        <span class="stat-pill">⭐ +40 XP</span>
+      </div>
+    </div>
+
+    <div class="content-card blue-border">
+      <div class="card-title">¿Por qué esta misión es clave?</div>
+      <div class="card-body">
+        La mayoría de docentes con disfonía funcional respiran de manera clavicular: suben los hombros al inspirar. Esto genera tensión directa en los músculos del cuello y la laringe.
+        <br><br>
+        La respiración costodiafragmática es la que usan cantantes y actores. Cuando la dominas: <strong>la laringe trabaja con menos presión, la voz es más estable y la fatiga aparece mucho más tarde</strong>.
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="goTo('s1')">🚀 INICIAR MISIÓN</button>
+  </div>
+
+  <!-- SCREEN 1: DETECCIÓN -->
+  <div class="screen" id="s1">
+    <div class="progress-bar">
+      <span class="progress-label">Progreso</span>
+      <div class="progress-track"><div class="progress-fill" style="width:20%"></div></div>
+      <span class="xp-badge">Fase 1</span>
+    </div>
+    <div class="breadcrumb">Misión Respiración Base › <span>¿Cómo respiras ahora?</span></div>
+
+    <div class="content-card blue-border">
+      <div class="card-title">Primero: detecta tu patrón actual</div>
+      <div class="card-body" style="font-size:14px;">
+        Haz esto literalmente mientras lees. No cambies nada todavía, solo observa.
+      </div>
+    </div>
+
+    <div class="exercise-card">
+      <ul class="step-instructions">
+        <li><span class="step-num-inline">1</span> Pon la mano derecha en el <strong>pecho</strong> y la mano izquierda en el <strong>abdomen</strong> (a la altura del ombligo).</li>
+        <li><span class="step-num-inline">2</span> Respira con normalidad. <strong>No cambies nada.</strong></li>
+        <li><span class="step-num-inline">3</span> Observa durante 5 respiraciones. ¿Qué mano se mueve primero?</li>
+      </ul>
+    </div>
+
+    <div class="hand-indicator">
+      <div class="hand-card" id="hand-chest">
+        <div class="hand-icon">✋</div>
+        <div class="hand-label">Mano del pecho</div>
+        <div class="hand-status">¿Se mueve primero?</div>
+      </div>
+      <div class="hand-card" id="hand-belly">
+        <div class="hand-icon">🖐</div>
+        <div class="hand-label">Mano del abdomen</div>
+        <div class="hand-status">¿Se mueve primero?</div>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">¿Qué has observado?</p>
+
+    <div class="semaphore" style="flex-direction:column; gap:10px;">
+      <button class="sem-btn green" style="text-align:left;padding:14px 18px;" onclick="showFeedback('fd','green');activateHand('belly')">
+        <span style="font-size:14px;">🟢 La mano del abdomen se mueve primero, hacia fuera</span>
+      </button>
+      <button class="sem-btn yellow" style="text-align:left;padding:14px 18px;" onclick="showFeedback('fd','yellow');activateHand('both')">
+        <span style="font-size:14px;">🟡 Las dos manos se mueven a la vez</span>
+      </button>
+      <button class="sem-btn red" style="text-align:left;padding:14px 18px;" onclick="showFeedback('fd','red');activateHand('chest')">
+        <span style="font-size:14px;">🔴 La mano del pecho se mueve primero o suben los hombros</span>
+      </button>
+    </div>
+
+    <div class="feedback-panel green" id="fd-green">
+      <h4>¡Ya tienes una base respiratoria!</h4>
+      <p>Tienes tendencia a la respiración costodiafragmática. Los ejercicios la reforzarán y aplicarán directamente a la voz. Tendrás ventaja en las series siguientes.</p>
+    </div>
+    <div class="feedback-panel yellow" id="fd-yellow">
+      <h4>Respiración mixta</h4>
+      <p>Tienes una respiración mixta, común en personas que hablan mucho profesionalmente. Con práctica conseguirás que el abdomen se adelante siempre al pecho.</p>
+    </div>
+    <div class="feedback-panel red" id="fd-red">
+      <h4>Respiración clavicular — ¡estás en el lugar correcto!</h4>
+      <p>La respiración clavicular es la más común en docentes con disfonía. Estos ejercicios están diseñados exactamente para ti. En 2-3 semanas notarás un cambio real.</p>
+    </div>
+
+    <button class="btn-primary" onclick="goTo('s2')" style="margin-top:16px">COMENZAR SERIE 1 →</button>
+  </div>
+
+  <!-- SCREEN 2: SERIE 1 -->
+  <div class="screen" id="s2">
+    <div class="progress-bar">
+      <span class="progress-label">Progreso</span>
+      <div class="progress-track"><div class="progress-fill" style="width:45%"></div></div>
+      <span class="xp-badge">+15 XP</span>
+    </div>
+    <div class="breadcrumb">Misión Respiración Base › <span>Serie 1: Sentir el diafragma</span></div>
+
+    <div class="exercise-card">
+      <div class="step-header">
+        <div class="step-number blue">1</div>
+        <div>
+          <div class="step-title">Serie 1: Sentir el diafragma</div>
+          <div class="step-time">⏱ 4 repeticiones · Sin sonido</div>
+        </div>
+      </div>
+
+      <ul class="step-instructions">
+        <li><span class="step-num-inline">📍</span> <strong>Posición:</strong> Sentado/a, erguido/a. Mano izquierda en el abdomen. Mano derecha en el pecho. Hombros relajados y abajo.</li>
+      </ul>
+
+      <div class="info-box" style="margin-top:14px;margin-bottom:14px;">
+        💡 El abdomen debe ir hacia <strong>fuera</strong> al inspirar (el diafragma baja y empuja). La mano del pecho casi no se mueve.
+      </div>
+    </div>
+
+    <div class="breath-visualizer">
+      <div class="breath-circle" id="bc1">LISTO</div>
+      <div class="breath-instruction" id="bi1">Pulsa START para comenzar</div>
+      <div class="breath-count" id="bcount1">—</div>
+      <div class="breath-phase" id="bphase1"></div>
+      <div class="rep-counter" id="reps1">
+        <div class="rep-dot" id="rd1-0"></div>
+        <div class="rep-dot" id="rd1-1"></div>
+        <div class="rep-dot" id="rd1-2"></div>
+        <div class="rep-dot" id="rd1-3"></div>
+      </div>
+      <div class="breath-controls">
+        <button class="breath-btn start" id="bb1-start" onclick="startBreath(1)">▶ START</button>
+        <button class="breath-btn stop" onclick="stopBreath(1)">■ PARAR</button>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      🟢 Señal de que lo haces bien: el abdomen se mueve hacia fuera al inspirar y la mano del pecho casi no se mueve
+    </div>
+    <div class="warning-box">
+      🔴 Si el pecho sube o los hombros se elevan: cierra los ojos, pon toda la atención en el abdomen y hazlo más lento
+    </div>
+
+    <button class="btn-primary" onclick="goTo('s3')" style="margin-top:16px">SIGUIENTE: SERIE 2 →</button>
+  </div>
+
+  <!-- SCREEN 3: SERIE 2 -->
+  <div class="screen" id="s3">
+    <div class="progress-bar">
+      <span class="progress-label">Progreso</span>
+      <div class="progress-track"><div class="progress-fill" style="width:65%"></div></div>
+      <span class="xp-badge">+15 XP</span>
+    </div>
+    <div class="breadcrumb">Misión Respiración Base › <span>Serie 2: Respiración con SSSSS</span></div>
+
+    <div class="exercise-card">
+      <div class="step-header">
+        <div class="step-number teal">2</div>
+        <div>
+          <div class="step-title">Serie 2: Respiración con "SSSSS"</div>
+          <div class="step-time">⏱ 4 repeticiones · Con sonido</div>
+        </div>
+      </div>
+
+      <ul class="step-instructions">
+        <li><span class="step-num-inline">🎯</span> Misma respiración que la Serie 1. El único cambio: en la espiración haz <strong>"SSSSSSSS"</strong> de manera continua durante 6 tiempos.</li>
+        <li><span class="step-num-inline">🔑</span> El "sssss" debe sonar <strong>uniforme</strong>, sin cortes ni pulsaciones. Si se corta, estás espirando demasiado rápido.</li>
+        <li><span class="step-num-inline">💡</span> El abdomen baja <strong>lentamente y de manera controlada</strong> durante el "sssss". Esto entrena el soporte diafragmático.</li>
+      </ul>
+    </div>
+
+    <div class="breath-visualizer">
+      <div class="breath-circle" id="bc2">LISTO</div>
+      <div class="breath-instruction" id="bi2">Pulsa START para comenzar</div>
+      <div class="breath-count" id="bcount2">—</div>
+      <div class="breath-phase" id="bphase2" style="font-size:16px;font-weight:900;color:var(--teal-light)"></div>
+      <div class="rep-counter" id="reps2">
+        <div class="rep-dot" id="rd2-0"></div>
+        <div class="rep-dot" id="rd2-1"></div>
+        <div class="rep-dot" id="rd2-2"></div>
+        <div class="rep-dot" id="rd2-3"></div>
+      </div>
+      <div class="breath-controls">
+        <button class="breath-btn start" id="bb2-start" onclick="startBreath(2)">▶ START</button>
+        <button class="breath-btn stop" onclick="stopBreath(2)">■ PARAR</button>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      🟢 Señal de que lo haces bien: el "sssss" suena igual de principio a fin, como un silbido continuo
+    </div>
+    <div class="warning-box">
+      🔴 Si el "sssss" se pulsa o se corta: abre más los labios, relaja los dientes y espira más despacio
+    </div>
+
+    <p style="font-size:13px;color:var(--muted);text-align:center;margin:16px 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">¿Cómo ha ido el "SSSSS"?</p>
+    <div class="semaphore">
+      <button class="sem-btn green" onclick="showFeedback('f2','green')"><span class="sem-icon">🟢</span><span class="sem-label">Uniforme</span></button>
+      <button class="sem-btn yellow" onclick="showFeedback('f2','yellow')"><span class="sem-icon">🟡</span><span class="sem-label">Se cortaba un poco</span></button>
+      <button class="sem-btn red" onclick="showFeedback('f2','red')"><span class="sem-icon">🔴</span><span class="sem-label">Se cortaba mucho</span></button>
+    </div>
+    <div class="feedback-panel green" id="f2-green"><h4>¡Control diafragmático activado!</h4><p>El "sssss" uniforme indica que el diafragma está subiendo de forma controlada. Eso es exactamente el soporte respiratorio que necesita tu voz.</p></div>
+    <div class="feedback-panel yellow" id="f2-yellow"><h4>¡Vas bien! Alarga la espiración</h4><p>Prueba a contar más lento en la espiración: 1... 2... 3... 4... 5... 6... (con pausas más largas entre números). La continuidad mejora rápido.</p></div>
+    <div class="feedback-panel red" id="f2-red"><h4>Vuelve a la Serie 1 mañana</h4><p>El abdomen no está controlando bien la espiración. Practica la Serie 1 (sin sonido) 2 días más antes de pasar al "sssss". No hay prisa.</p></div>
+
+    <button class="btn-primary" onclick="goTo('s4')" style="margin-top:16px">SIGUIENTE: SERIE 3 →</button>
+  </div>
+
+  <!-- SCREEN 4: SERIE 3 -->
+  <div class="screen" id="s4">
+    <div class="progress-bar">
+      <span class="progress-label">Progreso</span>
+      <div class="progress-track"><div class="progress-fill" style="width:85%"></div></div>
+      <span class="xp-badge">+10 XP</span>
+    </div>
+    <div class="breadcrumb">Misión Respiración Base › <span>Serie 3: Con voz "AAAAA"</span></div>
+
+    <div class="exercise-card">
+      <div class="step-header">
+        <div class="step-number green">3</div>
+        <div>
+          <div class="step-title">Serie 3: Respiración aplicada a la voz</div>
+          <div class="step-time">⏱ 4 repeticiones · Con voz</div>
+        </div>
+      </div>
+
+      <ul class="step-instructions">
+        <li><span class="step-num-inline">🎯</span> Misma respiración. En la espiración, en lugar de "sssss", di <strong>"AAAAAA"</strong> suavemente durante 6-8 tiempos.</li>
+        <li><span class="step-num-inline">🔑</span> La voz debe sonar <strong>igual de principio a fin</strong>, sin temblar ni apagarse al final.</li>
+        <li><span class="step-num-inline">💡</span> El abdomen baja lentamente mientras dura el "aaaaaa". Ese descenso controlado <strong>ES</strong> el soporte vocal.</li>
+      </ul>
+    </div>
+
+    <div class="breath-visualizer">
+      <div class="breath-circle" id="bc3">LISTO</div>
+      <div class="breath-instruction" id="bi3">Pulsa START para comenzar</div>
+      <div class="breath-count" id="bcount3">—</div>
+      <div class="breath-phase" id="bphase3" style="font-size:16px;font-weight:900;color:var(--green)"></div>
+      <div class="rep-counter" id="reps3">
+        <div class="rep-dot" id="rd3-0"></div>
+        <div class="rep-dot" id="rd3-1"></div>
+        <div class="rep-dot" id="rd3-2"></div>
+        <div class="rep-dot" id="rd3-3"></div>
+      </div>
+      <div class="breath-controls">
+        <button class="breath-btn start" id="bb3-start" onclick="startBreath(3)">▶ START</button>
+        <button class="breath-btn stop" onclick="stopBreath(3)">■ PARAR</button>
+      </div>
+    </div>
+
+    <div class="highlight-box">🟢 Señal de que lo haces bien: el "aaaaa" suena estable y uniforme de principio a fin</div>
+    <div class="warning-box">🔴 Si el "aaaaa" tiembla o se apaga: espira más lento y reduce el volumen. La estabilidad importa más que la duración.</div>
+
+    <p style="font-size:13px;color:var(--muted);text-align:center;margin:16px 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">¿Cómo ha sonado el "AAAAA"?</p>
+    <div class="semaphore">
+      <button class="sem-btn green" onclick="showFeedback('f3','green')"><span class="sem-icon">🟢</span><span class="sem-label">Estable y uniforme</span></button>
+      <button class="sem-btn yellow" onclick="showFeedback('f3','yellow')"><span class="sem-icon">🟡</span><span class="sem-label">Se apagaba al final</span></button>
+      <button class="sem-btn red" onclick="showFeedback('f3','red')"><span class="sem-icon">🔴</span><span class="sem-label">Temblaba o se cortaba</span></button>
+    </div>
+    <div class="feedback-panel green" id="f3-green"><h4>¡Coordinación fonorrespiratoria activa!</h4><p>La uniformidad del sonido indica un soporte diafragmático consistente. Eso es exactamente lo que evita la fatiga vocal. Anota 🟢 en tu registro.</p></div>
+    <div class="feedback-panel yellow" id="f3-yellow"><h4>¡Casi! La caída al final es normal</h4><p>Cuando la presión subglótica cae al final de la espiración, la voz se apaga. Practica la Serie 2 ("sssss") un día más para mejorar el control del final de la espiración.</p></div>
+    <div class="feedback-panel red" id="f3-red"><h4>Vuelve a la Serie 1 y 2</h4><p>El temblor indica tensión laríngea o espiración demasiado rápida. Baja el volumen al mínimo y alarga el conteo de espiración a 8 tiempos muy lentos.</p></div>
+
+    <button class="btn-primary" onclick="goTo('s5')" style="margin-top:16px">VER RESULTADO FINAL →</button>
+  </div>
+
+  <!-- SCREEN 5: FINAL -->
+  <div class="screen" id="s5">
+    <div class="progress-bar">
+      <span class="progress-label">Progreso</span>
+      <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+      <span class="xp-badge">¡COMPLETO!</span>
+    </div>
+
+    <div class="achievement">
+      <span class="achievement-icon">🫁</span>
+      <div class="achievement-text">
+        <h3>MISIÓN COMPLETADA</h3>
+        <p>Has desbloqueado: Respiración Costodiafragmática</p>
+      </div>
+    </div>
+
+    <div class="final-score">
+      <div class="score-number">+40</div>
+      <div class="score-label">XP ganados</div>
+      <div class="score-title">Misión Respiración Base · Nivel 2 VOCALITZA BÉ</div>
+    </div>
+
+    <div class="content-card teal-border" style="margin-bottom:16px;">
+      <div class="card-title">⚠️ Señales de alerta a conocer</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+        <div style="background:rgba(239,71,111,.08);border:1px solid rgba(239,71,111,.2);border-radius:8px;padding:12px 14px;font-size:13px;color:#ff8fab;">🔴 <strong>Mareo o cabeza vacía:</strong> Estás hiperventilando. Para, respira normal 1 minuto e inténtalo más lento.</div>
+        <div style="background:rgba(239,71,111,.08);border:1px solid rgba(239,71,111,.2);border-radius:8px;padding:12px 14px;font-size:13px;color:#ff8fab;">🔴 <strong>Tensión en cuello o hombros:</strong> Los hombros están subiendo. Bájalos conscientemente y vuelve al paso 1.</div>
+        <div style="background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.2);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--yellow);">🟡 <strong>Cuesta notar el abdomen:</strong> Prueba tumbado/a en el suelo boca arriba. Con la gravedad es mucho más fácil notar el movimiento diafragmático.</div>
+      </div>
+    </div>
+
+    <div class="content-card" style="background:rgba(26,122,110,.1);border:1px solid rgba(26,122,110,.2);">
+      <div class="card-title">📝 Recuerda anotar en tu Full de Registre</div>
+      <div class="card-body" style="font-size:13px;">Fecha de hoy · Actividad 4 Respiración Base · Color del semáforo de cada serie · Llévalo al próximo check-in con tu logopeda.</div>
+    </div>
+
+    <button class="btn-primary" onclick="goTo('s0')" style="margin-top:16px">🔄 REPETIR MISIÓN</button>
+    <button class="btn-secondary" onclick="goTo('s0')">← Volver al inicio</button>
+  </div>
+
+</div>
+<script>
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+  }
+  function showFeedback(group,color) {
+    ['green','yellow','red'].forEach(c=>{
+      const el=document.getElementById(`${group}-${c}`);
+      if(el) el.classList.remove('visible');
+    });
+    const t=document.getElementById(`${group}-${color}`);
+    if(t) t.classList.add('visible');
+  }
+  function activateHand(which) {
+    document.getElementById('hand-chest').classList.remove('active');
+    document.getElementById('hand-belly').classList.remove('active');
+    if(which==='belly') document.getElementById('hand-belly').classList.add('active');
+    else if(which==='chest') document.getElementById('hand-chest').classList.add('active');
+    else { document.getElementById('hand-belly').classList.add('active'); document.getElementById('hand-chest').classList.add('active'); }
+  }
+
+  // Breathing animator
+  const breathState = {};
+  function startBreath(n) {
+    if(breathState[n]) { stopBreath(n); return; }
+    const phases = [
+      { label:'INSPIRA', duration:4, class:'expand', countColor:'green', sound:'' },
+      { label:'RETÉ', duration:2, class:'hold', countColor:'yellow', sound:'' },
+      { label: n===1?'ESPIRA':'ESPIRA'+(n===2?' "SSSSS"':' "AAAAA"'), duration:6, class:'shrink', countColor:'', sound: n===2?'sssss':n===3?'aaaaa':'' },
+      { label:'DESCANSA', duration:2, class:'', countColor:'', sound:'' },
+    ];
+    let rep=0, phaseIdx=0, count=0;
+    const circle=document.getElementById(`bc${n}`);
+    const instr=document.getElementById(`bi${n}`);
+    const countEl=document.getElementById(`bcount${n}`);
+    const phaseEl=document.getElementById(`bphase${n}`);
+    const btn=document.getElementById(`bb${n}-start`);
+    btn.textContent='■ PARAR';
+    btn.style.background='linear-gradient(135deg,var(--orange),#d4622f)';
+
+    function runPhase() {
+      if(!breathState[n]) return;
+      const p=phases[phaseIdx];
+      circle.className='breath-circle '+(p.class||'');
+      instr.textContent=p.label;
+      phaseEl.textContent=p.sound?`Haz "${p.sound.toUpperCase()}" ahora`:'';
+      count=p.duration;
+      countEl.textContent=count;
+      countEl.className='breath-count '+(p.countColor||'');
+      const tick=setInterval(()=>{
+        if(!breathState[n]){clearInterval(tick);return;}
+        count--;
+        countEl.textContent=count<=0?'':count;
+        if(count<=0){
+          clearInterval(tick);
+          phaseIdx=(phaseIdx+1)%phases.length;
+          if(phaseIdx===0){
+            document.getElementById(`rd${n}-${rep}`).classList.add('done');
+            rep++;
+            if(rep>=4){stopBreath(n,true);return;}
+          }
+          setTimeout(runPhase,200);
+        }
+      },1000);
+    }
+    breathState[n]=true;
+    runPhase();
+  }
+
+  function stopBreath(n,done=false) {
+    breathState[n]=false;
+    const circle=document.getElementById(`bc${n}`);
+    const instr=document.getElementById(`bi${n}`);
+    const countEl=document.getElementById(`bcount${n}`);
+    const phaseEl=document.getElementById(`bphase${n}`);
+    const btn=document.getElementById(`bb${n}-start`);
+    circle.className='breath-circle';
+    if(done){
+      circle.textContent='✓ LISTO';
+      circle.style.background='radial-gradient(circle,rgba(6,214,160,.4) 0%,rgba(26,122,110,.3) 60%,transparent 100%)';
+      circle.style.borderColor='var(--green)';
+      circle.style.color='var(--green)';
+      instr.textContent='¡4 repeticiones completadas!';
+      countEl.textContent='';
+      phaseEl.textContent='Pasa a la siguiente serie';
+    } else {
+      circle.textContent='LISTO';
+      instr.textContent='Pulsa START para comenzar';
+      countEl.textContent='—';
+      phaseEl.textContent='';
+    }
+    btn.textContent='▶ START';
+    btn.style.background='linear-gradient(135deg,var(--blue),#2196F3)';
+  }
+</script>
+</body>
+</html>
